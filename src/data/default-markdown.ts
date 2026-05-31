@@ -1,6 +1,6 @@
 import type { Locale } from '../i18n';
 
-const ZH_MARKDOWN = `---
+const NE_MARKDOWN = `---
 name: Aayurt Shrestha
 title: Full-stack Software Engineer
 phone: "+977 9843516471"
@@ -129,7 +129,7 @@ Full-stack Software Engineer with 5+ years of experience designing and building 
 `;
 
 export function getDefaultMarkdown(locale: Locale): string {
-  return locale === 'zh' ? ZH_MARKDOWN : EN_MARKDOWN;
+  return locale === 'ne' ? NE_MARKDOWN : EN_MARKDOWN;
 }
 
-export const DEFAULT_MARKDOWN = ZH_MARKDOWN;
+export const DEFAULT_MARKDOWN = NE_MARKDOWN;

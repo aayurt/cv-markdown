@@ -1,37 +1,37 @@
-export type Locale = 'zh' | 'en';
+export type Locale = 'ne' | 'en';
 
 const messages: Record<Locale, Record<string, string>> = {
-  zh: {
+  ne: {
     // UI
-    exportPdf: '下载 PDF',
-    exportHtml: '导出 HTML',
-    shareLink: '分享链接',
-    linkCopied: '链接已复制到剪贴板',
+    exportPdf: 'PDF डाउनलोड',
+    exportHtml: 'HTML निर्यात',
+    shareLink: 'लिङ्क साझा गर्नुहोस्',
+    linkCopied: 'लिङ्क क्लिपबोर्डमा प्रतिलिपि गरियो',
     editorLabel: 'resume.md',
-    charCount: '{n} 字',
-    viewFooter: '使用 styled-resume 制作你的简历',
+    charCount: '{n} अक्षर',
+    viewFooter: 'styled-resume बाट बनाइएको',
     // Template section headers
-    summary: '个人简介',
-    projects: '项目经历',
-    experience: '工作经历',
-    education: '教育经历',
-    skills: '技能',
-    appendix: '附录',
+    summary: 'सारांश',
+    projects: 'परियोजनाहरू',
+    experience: 'अनुभव',
+    education: 'शिक्षा',
+    skills: 'सीपहरू',
+    appendix: 'परिशिष्ट',
     // Editorial template
-    jobIntention: '求职意向',
-    degree: '学位',
-    major: '专业',
-    period: '时间',
+    jobIntention: 'उद्देश्य',
+    degree: 'डिग्री',
+    major: 'प्रमुख विषय',
+    period: 'अवधि',
     // Claude template
-    askExperience: '工作经历呢？',
-    askIntro: '介绍一下你自己吧 👋',
-    askProjects: '有什么代表性项目吗？',
-    askAppendix: '有没有想展示的附加材料？',
-    thanksReading: '感谢阅读',
+    askExperience: 'कामको अनुभवको बारेमा के छ?',
+    askIntro: 'आफ्नो बारेमा बताउनुहोस् 👋',
+    askProjects: 'कुनै प्रमुख परियोजनाहरू?',
+    askAppendix: 'कुनै अतिरिक्त सामग्री साझा गर्न चाहनुहुन्छ?',
+    thanksReading: 'पढ्नु भएकोमा धन्यवाद',
     // Shared
-    imgPlaceholder: '在 Markdown 中使用 ![alt](url) 插入图片',
-    imgPasteHere: '在此处粘贴图片',
-    techStack: '技术栈',
+    imgPlaceholder: 'Markdown मा ![alt](url) प्रयोग गरेर तस्वीर सम्मिलित गर्नुहोस्',
+    imgPasteHere: 'यहाँ तस्वीर टाँस्नुहोस्',
+    techStack: 'प्रविधि स्ट्याक',
   },
   en: {
     // UI
@@ -70,7 +70,7 @@ const messages: Record<Locale, Record<string, string>> = {
 export function detectLocale(): Locale {
   try {
     const lang = navigator.language || '';
-    return lang.startsWith('zh') ? 'zh' : 'en';
+    return lang.startsWith('ne') ? 'ne' : 'en';
   } catch {
     return 'en';
   }

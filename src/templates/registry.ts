@@ -2,6 +2,8 @@ import type { ComponentType } from "react";
 import type { ResumeData } from "../types/resume";
 import type { Locale } from "../i18n";
 import ShadcnPreview from "./shadcn/PreviewTemplate";
+import ShadcnRetroPreview from "./shadcn-retro/PreviewTemplate";
+import AwesomeShadcnPreview from "./awesomeshadcn/PreviewTemplate";
 import ClaudePreview from "./claude/PreviewTemplate";
 import TerminalPreview from "./terminal/PreviewTemplate";
 import EditorialPreview from "./editorial/PreviewTemplate";
@@ -20,6 +22,8 @@ export interface Template {
 
 export const templates: Template[] = [
   { id: "shadcn", name: "Shadcn", component: ShadcnPreview },
+  { id: "shadcn-retro", name: "Retro", component: ShadcnRetroPreview },
+  { id: "awesomeshadcn", name: "Awesome", component: AwesomeShadcnPreview },
   { id: "claude", name: "Claude", component: ClaudePreview },
   { id: "terminal", name: "Terminal", component: TerminalPreview },
   { id: "editorial", name: "Editorial", component: EditorialPreview },

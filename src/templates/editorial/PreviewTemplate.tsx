@@ -229,7 +229,7 @@ export default function EditorialPreview({ data, locale = 'en' }: { data: Resume
 }
 
 const EDITORIAL_CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Noto+Serif+SC:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:wght@400;500;600&display=swap');
 
 .ed-wrapper {
   --bg: #f5f0e8;
@@ -254,9 +254,9 @@ const EDITORIAL_CSS = `
   --gap: 10px;
   --pad: 24px;
   --pad-sm: 18px;
-  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
-  --font-body: 'Source Serif 4', 'Noto Serif SC', serif;
-  --font-sans: 'DM Sans', 'Noto Sans SC', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Source Serif 4', serif;
+  --font-sans: 'DM Sans', sans-serif;
 
   background: var(--bg);
   color: var(--text-1);

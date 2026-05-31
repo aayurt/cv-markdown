@@ -69,11 +69,11 @@ export default function ShadcnPreview({ data, locale = 'en' }: { data: ResumeDat
         minHeight: "100vh",
         background: "linear-gradient(180deg, #fafafa 0%, #f0f0f2 100%)",
         display: "flex", justifyContent: "center", padding: "40px 16px",
-        fontFamily: '"Source Han Sans SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
@@ -113,7 +113,7 @@ export default function ShadcnPreview({ data, locale = 'en' }: { data: ResumeDat
               <div>
                 <h1 style={{
                   fontSize: "32px", fontWeight: 700, letterSpacing: "-0.02em",
-                  lineHeight: 1.1, marginBottom: "6px", fontFamily: '"Noto Sans SC", sans-serif',
+                  lineHeight: 1.1, marginBottom: "6px", fontFamily: '"Inter", sans-serif',
                 }}>
                   {d.header.name}
                 </h1>

@@ -50,7 +50,7 @@ function App() {
 
   const charCount = markdown.replace(/\s/g, '').length;
 
-  // 自动保存到 localStorage（500ms 防抖）
+  // Auto-save to localStorage with 500ms debounce
   useEffect(() => {
     const timer = setTimeout(() => {
       try { localStorage.setItem(STORAGE_KEY, markdown); } catch {}
@@ -67,7 +67,7 @@ function App() {
   }, [locale]);
 
   const handleToggleLocale = useCallback(() => {
-    const next: Locale = locale === 'zh' ? 'en' : 'zh';
+    const next: Locale = locale === 'ne' ? 'en' : 'ne';
     // Smart switch: if content is default, swap to new locale's default
     const currentDefault = getDefaultMarkdown(locale);
     if (markdown === currentDefault) {
@@ -82,14 +82,14 @@ function App() {
     if (!printWindow) return;
 
     const previewHtml = previewRef.current.innerHTML;
-    const title = `${resumeData.header.name || 'Resume'}-简历`;
+    const title = `${resumeData.header.name || 'Resume'} Resume`;
 
     printWindow.document.write(`<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>${title}</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -104,7 +104,6 @@ function App() {
     width: 210mm;
   }
 
-  /* 外层容器：去掉 100vh、渐变、padding */
   body > div {
     min-height: auto !important;
     background: white !important;
@@ -112,7 +111,6 @@ function App() {
     display: block !important;
   }
 
-  /* 卡片：撑满宽度，去掉装饰 */
   .resume-card {
     max-width: 100% !important;
     border-radius: 0 !important;
@@ -120,14 +118,12 @@ function App() {
     box-shadow: none !important;
   }
 
-  /* 禁用所有动画 */
   .resume-card,
   .section-block,
   .bullet-item {
     animation: none !important;
   }
 
-  /* 隐藏模板 footer */
   .resume-footer {
     display: none !important;
   }
@@ -138,14 +134,14 @@ function App() {
     printWindow.document.close();
 
     const triggerPrint = () => {
-      // 量出内容实际高度，动态设置页面尺寸，实现单页连续 PDF
+      // Measure content height for single-page continuous PDF
       const body = printWindow.document.body;
       const docEl = printWindow.document.documentElement;
       const contentHeight = Math.max(
         body.scrollHeight, body.offsetHeight,
         docEl.scrollHeight, docEl.offsetHeight
       );
-      const heightMm = Math.ceil(contentHeight * 25.4 / 96) + 5; // px → mm，+5 防止四舍五入截断
+      const heightMm = Math.ceil(contentHeight * 25.4 / 96) + 5; // px to mm, +5 safety margin
       const pageStyle = printWindow.document.createElement('style');
       pageStyle.textContent = `@page { size: 210mm ${heightMm}mm; margin: 0; }`;
       printWindow.document.head.appendChild(pageStyle);
@@ -161,7 +157,7 @@ function App() {
 
   const handleExportHtml = useCallback(() => {
     if (!previewRef.current) return;
-    const title = `${resumeData.header.name || 'Resume'}-简历`;
+    const title = `${resumeData.header.name || 'Resume'} Resume`;
     exportHtml(previewRef.current, title);
   }, [resumeData]);
 
@@ -223,7 +219,7 @@ function App() {
               transition: 'all 0.15s',
             }}
           >
-            {locale === 'zh' ? 'EN' : '中'}
+            {locale === 'ne' ? 'EN' : 'ने'}
           </button>
           <button
             onClick={handleShareLink}

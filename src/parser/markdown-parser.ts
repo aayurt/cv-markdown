@@ -105,12 +105,12 @@ type SectionType = 'summary' | 'projects' | 'experience' | 'education' | 'skills
 
 function matchSectionType(title: string): SectionType | null {
   const t = title.toLowerCase();
-  if (t.includes('简介') || t.includes('summary') || t.includes('about')) return 'summary';
-  if (t.includes('项目') || t.includes('project')) return 'projects';
-  if (t.includes('工作') || t.includes('experience') || t.includes('work')) return 'experience';
-  if (t.includes('教育') || t.includes('education')) return 'education';
-  if (t.includes('技能') || t.includes('skill')) return 'skills';
-  if (t.includes('附录') || t.includes('appendix')) return 'appendix';
+  if (t.includes('सारांश') || t.includes('summary') || t.includes('about')) return 'summary';
+  if (t.includes('परियोजना') || t.includes('project')) return 'projects';
+  if (t.includes('अनुभव') || t.includes('experience') || t.includes('work')) return 'experience';
+  if (t.includes('शिक्षा') || t.includes('education')) return 'education';
+  if (t.includes('सीप') || t.includes('skill')) return 'skills';
+  if (t.includes('परिशिष्ट') || t.includes('appendix')) return 'appendix';
   return null;
 }
 

@@ -9,9 +9,12 @@ import ClaudePreview from "./claude/PreviewTemplate";
 import TerminalPreview from "./terminal/PreviewTemplate";
 import EditorialPreview from "./editorial/PreviewTemplate";
 
+export type ThemeMode = 'light' | 'dark';
+
 export interface TemplateProps {
   data: ResumeData;
   locale?: Locale;
+  theme?: ThemeMode;
 }
 
 export interface Template {

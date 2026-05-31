@@ -3,6 +3,204 @@ import type { ResumeData } from "../../types/resume";
 import { t } from '../../i18n';
 import type { Locale } from '../../i18n';
 
+interface SC {
+  pageBg: string;
+  cardBg: string;
+  cardBorder: string;
+  cardBorderHover: string;
+  cardShadow: string;
+  cardShadowHover: string;
+  headerBg: string;
+  headerBar: string;
+  headingText: string;
+  bodyText: string;
+  mutedText: string;
+  dimText: string;
+  veryDimText: string;
+  sectionChipBg: string;
+  sectionChipBorder: string;
+  sectionChipText: string;
+  chipBg: string;
+  chipBorder: string;
+  chipText: string;
+  chipHoverBg: string;
+  chipHoverBorder: string;
+  iconBg: string;
+  iconColor: string;
+  iconProjectColors: string[];
+  statusBg: string;
+  statusBorder: string;
+  statusText: string;
+  statusDot: string;
+  tagBg: string;
+  tagText: string;
+  tagBorder: string;
+  tagHoverBg: string;
+  tagHoverText: string;
+  tagHoverBorder: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
+  eduBg: string;
+  eduBorder: string;
+  eduSchool: string;
+  eduDegreeBg: string;
+  eduDegreeText: string;
+  eduMajor: string;
+  appendixBg: string;
+  appendixBorder: string;
+  appendixHeaderBg: string;
+  appendixHeaderBorder: string;
+  appendixFigBg: string;
+  appendixFigText: string;
+  appendixFigBorder: string;
+  imgPlaceholderBg: string;
+  imgPlaceholderBorder: string;
+  imgPlaceholderText: string;
+  imgPlaceholderTextSecondary: string;
+  skillBg: string;
+  skillText: string;
+  skillBorder: string;
+  bulletDot: string;
+  cssCardShadowHover: string;
+  cssCardBorderHover: string;
+  cssTagHoverBg: string;
+  cssTagHoverText: string;
+  cssTagHoverBorder: string;
+}
+
+const LIGHT: SC = {
+  pageBg: "#ffffff",
+  cardBg: "#ffffff",
+  cardBorder: "#e4e4e7",
+  cardBorderHover: "#d4d4d8",
+  cardShadow: "0 1px 2px rgba(0,0,0,0.02)",
+  cardShadowHover: "0 4px 12px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.06)",
+  headerBg: "linear-gradient(145deg, #fafafa 0%, #ffffff 100%)",
+  headerBar: "linear-gradient(90deg, #18181b 0%, #52525b 50%, #18181b 100%)",
+  headingText: "#18181b",
+  bodyText: "#3f3f46",
+  mutedText: "#52525b",
+  dimText: "#71717a",
+  veryDimText: "#a1a1aa",
+  sectionChipBg: "#f4f4f5",
+  sectionChipBorder: "#e4e4e7",
+  sectionChipText: "#71717a",
+  chipBg: "#ffffff",
+  chipBorder: "#e4e4e7",
+  chipText: "#3f3f46",
+  chipHoverBg: "#fafafa",
+  chipHoverBorder: "#a1a1aa",
+  iconBg: "#f4f4f5",
+  iconColor: "#18181b",
+  iconProjectColors: ["#f4f4f5", "#fef2f2", "#f0f9ff", "#f5f3ff", "#fefce8", "#f0fdf4"],
+  statusBg: "#f0fdf4",
+  statusBorder: "#bbf7d0",
+  statusText: "#166534",
+  statusDot: "#22c55e",
+  tagBg: "#f4f4f5",
+  tagText: "#52525b",
+  tagBorder: "#e4e4e7",
+  tagHoverBg: "#18181b",
+  tagHoverText: "#fafafa",
+  tagHoverBorder: "#18181b",
+  badgeBg: "#f4f4f5",
+  badgeText: "#52525b",
+  badgeBorder: "#e4e4e7",
+  eduBg: "#ffffff",
+  eduBorder: "#e4e4e7",
+  eduSchool: "#18181b",
+  eduDegreeBg: "#18181b",
+  eduDegreeText: "#fafafa",
+  eduMajor: "#52525b",
+  appendixBg: "#ffffff",
+  appendixBorder: "#e4e4e7",
+  appendixHeaderBg: "#fafafa",
+  appendixHeaderBorder: "#e4e4e7",
+  appendixFigBg: "#f4f4f5",
+  appendixFigText: "#a1a1aa",
+  appendixFigBorder: "#e4e4e7",
+  imgPlaceholderBg: "repeating-conic-gradient(#fafafa 0% 25%, transparent 0% 50%) 50% / 16px 16px",
+  imgPlaceholderBorder: "#e4e4e7",
+  imgPlaceholderText: "#a1a1aa",
+  imgPlaceholderTextSecondary: "#d4d4d8",
+  skillBg: "#fafafa",
+  skillText: "#3f3f46",
+  skillBorder: "#e4e4e7",
+  bulletDot: "#d4d4d8",
+  cssCardShadowHover: "0 4px 12px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.06)",
+  cssCardBorderHover: "#d4d4d8",
+  cssTagHoverBg: "#18181b",
+  cssTagHoverText: "#fafafa",
+  cssTagHoverBorder: "#18181b",
+};
+
+const DARK: SC = {
+  pageBg: "#1a1a1a",
+  cardBg: "#27272a",
+  cardBorder: "#3f3f46",
+  cardBorderHover: "#71717a",
+  cardShadow: "0 1px 2px rgba(0,0,0,0.2)",
+  cardShadowHover: "0 4px 12px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.4)",
+  headerBg: "linear-gradient(145deg, #18181b 0%, #27272a 100%)",
+  headerBar: "linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%)",
+  headingText: "#fafafa",
+  bodyText: "#d4d4d8",
+  mutedText: "#a1a1aa",
+  dimText: "#71717a",
+  veryDimText: "#52525b",
+  sectionChipBg: "#18181b",
+  sectionChipBorder: "#3f3f46",
+  sectionChipText: "#a1a1aa",
+  chipBg: "#27272a",
+  chipBorder: "#3f3f46",
+  chipText: "#a1a1aa",
+  chipHoverBg: "#18181b",
+  chipHoverBorder: "#71717a",
+  iconBg: "#3f3f46",
+  iconColor: "#fafafa",
+  iconProjectColors: ["#3f3f46", "#3f1f1f", "#1f2f4f", "#2f1f3f", "#3f3f1f", "#1f3f2f"],
+  statusBg: "#1a3a2a",
+  statusBorder: "#166534",
+  statusText: "#4ade80",
+  statusDot: "#22c55e",
+  tagBg: "#18181b",
+  tagText: "#a1a1aa",
+  tagBorder: "#27272a",
+  tagHoverBg: "#fafafa",
+  tagHoverText: "#18181b",
+  tagHoverBorder: "#fafafa",
+  badgeBg: "#3f3f46",
+  badgeText: "#d4d4d8",
+  badgeBorder: "#3f3f46",
+  eduBg: "#18181b",
+  eduBorder: "#3f3f46",
+  eduSchool: "#fafafa",
+  eduDegreeBg: "#3f3f46",
+  eduDegreeText: "#d4d4d8",
+  eduMajor: "#a1a1aa",
+  appendixBg: "#27272a",
+  appendixBorder: "#3f3f46",
+  appendixHeaderBg: "#18181b",
+  appendixHeaderBorder: "#3f3f46",
+  appendixFigBg: "#18181b",
+  appendixFigText: "#52525b",
+  appendixFigBorder: "#3f3f46",
+  imgPlaceholderBg: "repeating-conic-gradient(#18181b 0% 25%, transparent 0% 50%) 50% / 16px 16px",
+  imgPlaceholderBorder: "#3f3f46",
+  imgPlaceholderText: "#52525b",
+  imgPlaceholderTextSecondary: "#3f3f46",
+  skillBg: "#18181b",
+  skillText: "#d4d4d8",
+  skillBorder: "#3f3f46",
+  bulletDot: "#52525b",
+  cssCardShadowHover: "0 4px 12px rgba(0,0,0,0.3), 0 12px 32px rgba(0,0,0,0.4)",
+  cssCardBorderHover: "#71717a",
+  cssTagHoverBg: "#fafafa",
+  cssTagHoverText: "#18181b",
+  cssTagHoverBorder: "#fafafa",
+};
+
 // ── Inline SVG Icons ──
 function GithubIcon() {
   return (
@@ -87,13 +285,13 @@ function ImagePlaceholderIcon() {
   );
 }
 
-function SectionChip({ label }: { label: string }) {
+function SectionChip({ label, c }: { label: string; c: SC }) {
   return (
     <div style={{
       display: "inline-flex", alignItems: "center", gap: "5px",
       padding: "3px 10px", borderRadius: "9999px",
-      background: "#f4f4f5", border: "1px solid #e4e4e7",
-      fontSize: "11px", fontWeight: 600, color: "#71717a",
+      background: c.sectionChipBg, border: `1px solid ${c.sectionChipBorder}`,
+      fontSize: "11px", fontWeight: 600, color: c.sectionChipText,
       fontFamily: '"Inter", sans-serif', letterSpacing: "0.02em",
       textTransform: "uppercase",
     }}>
@@ -117,15 +315,16 @@ function CardGridSection({ title, children, delay }: { title: React.ReactNode; c
   );
 }
 
-export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: ResumeData; locale?: Locale }) {
+export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const d = data;
+  const c = theme === 'dark' ? DARK : LIGHT;
   const [hoveredProj, setHoveredProj] = useState<number | null>(null);
   const [hoveredExp, setHoveredExp] = useState<number | null>(null);
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#ffffff",
+      background: c.pageBg,
       display: "flex", justifyContent: "center",
       padding: "28px 16px",
       fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -155,17 +354,17 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 
         .awesome-card:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.06);
-          border-color: #d4d4d8 !important;
+          box-shadow: var(--card-shadow-hover);
+          border-color: var(--card-border-hover) !important;
         }
 
         .awesome-tag {
           transition: all 0.15s ease;
         }
         .awesome-tag:hover {
-          background: #18181b !important;
-          color: #fafafa !important;
-          border-color: #18181b !important;
+          background: var(--tag-hover-bg) !important;
+          color: var(--tag-hover-color) !important;
+          border-color: var(--tag-hover-border) !important;
         }
 
         .awesome-timeline-dot {
@@ -183,20 +382,28 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
       `}</style>
 
       {/* Outer container */}
-      <div style={{ width: "100%", maxWidth: "780px" }}>
+      <div style={{
+        width: "100%", maxWidth: "780px",
+        "--card-shadow-hover": c.cssCardShadowHover,
+        "--card-border-hover": c.cssCardBorderHover,
+        "--tag-hover-bg": c.cssTagHoverBg,
+        "--tag-hover-color": c.cssTagHoverText,
+        "--tag-hover-border": c.cssTagHoverBorder,
+      } as React.CSSProperties & Record<string, string>}
+      >
 
         {/* ===== HERO HEADER ===== */}
         <div className="awesome-card" style={{
-          borderRadius: "12px", border: "1px solid #e4e4e7",
-          background: "linear-gradient(145deg, #fafafa 0%, #ffffff 100%)",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+          borderRadius: "12px", border: `1px solid ${c.cardBorder}`,
+          background: c.headerBg,
+          boxShadow: c.cardShadow,
           overflow: "hidden", marginBottom: "20px",
           animationDelay: "0s",
         }}>
           {/* Decorative top bar */}
           <div style={{
             height: "4px",
-            background: "linear-gradient(90deg, #18181b 0%, #52525b 50%, #18181b 100%)",
+            background: c.headerBar,
           }} />
 
           <div style={{ padding: "28px 32px 24px" }}>
@@ -209,13 +416,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                 <h1 style={{
                   fontSize: "30px", fontWeight: 700,
                   letterSpacing: "-0.025em",
-                  lineHeight: 1.15, color: "#18181b",
+                  lineHeight: 1.15, color: c.headingText,
                   margin: 0, fontFamily: '"Inter", sans-serif',
                 }}>
                   {d.header.name}
                 </h1>
                 <p style={{
-                  fontSize: "15px", color: "#52525b",
+                  fontSize: "15px", color: c.mutedText,
                   marginTop: "4px", fontWeight: 400,
                   fontFamily: '"Inter", sans-serif',
                 }}>
@@ -226,13 +433,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                 <div className="awesome-badge" style={{
                   display: "inline-flex", alignItems: "center", gap: "6px",
                   padding: "5px 14px", borderRadius: "9999px",
-                  background: "#f0fdf4", border: "1px solid #bbf7d0",
-                  fontSize: "12px", fontWeight: 500, color: "#166534",
+                  background: c.statusBg, border: `1px solid ${c.statusBorder}`,
+                  fontSize: "12px", fontWeight: 500, color: c.statusText,
                   fontFamily: '"Inter", sans-serif',
                 }}>
                   <span style={{
                     width: "7px", height: "7px", borderRadius: "50%",
-                    background: "#22c55e", display: "inline-block",
+                    background: c.statusDot, display: "inline-block",
                   }} />
                   {d.header.status}
                 </div>
@@ -249,13 +456,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "6px",
                     padding: "6px 14px", borderRadius: "8px",
-                    border: "1px solid #e4e4e7", background: "#ffffff",
-                    fontSize: "13px", color: "#3f3f46",
+                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
+                    fontSize: "13px", color: c.chipText,
                     cursor: "pointer", transition: "all 0.15s",
                     textDecoration: "none",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#a1a1aa"; e.currentTarget.style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e4e4e7"; e.currentTarget.style.background = "#ffffff"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
                 >
                   <GithubIcon /> {d.header.github}
                 </a>
@@ -266,13 +473,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "6px",
                     padding: "6px 14px", borderRadius: "8px",
-                    border: "1px solid #e4e4e7", background: "#ffffff",
-                    fontSize: "13px", color: "#3f3f46",
+                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
+                    fontSize: "13px", color: c.chipText,
                     cursor: "pointer", transition: "all 0.15s",
                     textDecoration: "none",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#a1a1aa"; e.currentTarget.style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e4e4e7"; e.currentTarget.style.background = "#ffffff"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
                 >
                   <GlobeIcon /> {d.header.website.replace(/^https?:\/\//, "")}
                 </a>
@@ -282,13 +489,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "6px",
                     padding: "6px 14px", borderRadius: "8px",
-                    border: "1px solid #e4e4e7", background: "#ffffff",
-                    fontSize: "13px", color: "#3f3f46",
+                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
+                    fontSize: "13px", color: c.chipText,
                     cursor: "pointer", transition: "all 0.15s",
                     textDecoration: "none",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#a1a1aa"; e.currentTarget.style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e4e4e7"; e.currentTarget.style.background = "#ffffff"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
                 >
                   <PhoneIcon /> {d.header.phone}
                 </a>
@@ -298,13 +505,13 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "6px",
                     padding: "6px 14px", borderRadius: "8px",
-                    border: "1px solid #e4e4e7", background: "#ffffff",
-                    fontSize: "13px", color: "#3f3f46",
+                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
+                    fontSize: "13px", color: c.chipText,
                     cursor: "pointer", transition: "all 0.15s",
                     textDecoration: "none",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#a1a1aa"; e.currentTarget.style.background = "#fafafa"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e4e4e7"; e.currentTarget.style.background = "#ffffff"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
                 >
                   <MailIcon /> {d.header.email}
                 </a>
@@ -318,16 +525,16 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 
           {/* Summary */}
           {d.summary && (
-            <CardGridSection title={<SectionChip label={t('summary', locale)} />} delay="0.05s">
+            <CardGridSection title={<SectionChip label={t('summary', locale)} c={c} />} delay="0.05s">
               <div className="awesome-card" style={{
-                borderRadius: "10px", border: "1px solid #e4e4e7",
-                background: "#ffffff", padding: "20px 24px",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                borderRadius: "10px", border: `1px solid ${c.cardBorder}`,
+                background: c.cardBg, padding: "20px 24px",
+                boxShadow: c.cardShadow,
                 animationDelay: "0.08s",
               }}>
                 <p style={{
                   fontSize: "14px", lineHeight: 1.8,
-                  color: "#3f3f46", margin: 0,
+                  color: c.bodyText, margin: 0,
                 }}>
                   {d.summary}
                 </p>
@@ -337,7 +544,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 
           {/* Projects */}
           {d.projects && d.projects.length > 0 && (
-            <CardGridSection title={<SectionChip label={t('projects', locale)} />} delay="0.1s">
+            <CardGridSection title={<SectionChip label={t('projects', locale)} c={c} />} delay="0.1s">
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {d.projects.map((proj, i) => (
                   <div key={i}
@@ -346,9 +553,9 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                     onMouseLeave={() => setHoveredProj(null)}
                     style={{
                       borderRadius: "10px", border: "1px solid",
-                      borderColor: hoveredProj === i ? "#a1a1aa" : "#e4e4e7",
-                      background: "#ffffff", padding: "20px 24px",
-                      boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                      borderColor: hoveredProj === i ? c.cardBorderHover : c.cardBorder,
+                      background: c.cardBg, padding: "20px 24px",
+                      boxShadow: c.cardShadow,
                       animationDelay: `${0.12 + i * 0.04}s`,
                     }}
                   >
@@ -361,15 +568,15 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center",
                           width: "32px", height: "32px", borderRadius: "8px",
-                          background: hasGoodColor(i) ? projectColors[i % projectColors.length] : "#f4f4f5",
-                          color: "#18181b", flexShrink: 0,
+                          background: hasGoodColor(i) ? c.iconProjectColors[i % c.iconProjectColors.length] : c.iconBg,
+                          color: c.iconColor, flexShrink: 0,
                         }}>
                           <FolderIcon />
                         </div>
                         <div>
                           <h3 style={{
                             fontSize: "15px", fontWeight: 600,
-                            color: "#18181b", margin: 0,
+                            color: c.headingText, margin: 0,
                           }}>
                             {proj.name}
                           </h3>
@@ -377,7 +584,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                             <a href={`https://${proj.repo}`} target="_blank" rel="noopener noreferrer"
                               style={{
                                 display: "inline-flex", alignItems: "center", gap: "4px",
-                                fontSize: "12px", color: "#71717a", textDecoration: "none",
+                                fontSize: "12px", color: c.dimText, textDecoration: "none",
                                 fontFamily: '"JetBrains Mono", monospace', marginTop: "1px",
                               }}>
                               {proj.repo} <ExternalLinkIcon />
@@ -388,7 +595,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                     </div>
 
                     {proj.overview && (
-                      <p style={{ fontSize: "13px", lineHeight: 1.65, color: "#52525b", margin: "0 0 10px 0" }}>
+                      <p style={{ fontSize: "13px", lineHeight: 1.65, color: c.mutedText, margin: "0 0 10px 0" }}>
                         {proj.overview}
                       </p>
                     )}
@@ -398,12 +605,12 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         {proj.bullets.map((b, j) => (
                           <li key={j} style={{
                             display: "flex", alignItems: "flex-start", gap: "8px",
-                            fontSize: "13px", lineHeight: 1.7, color: "#3f3f46",
+                            fontSize: "13px", lineHeight: 1.7, color: c.bodyText,
                             marginBottom: "3px",
                           }}>
                             <span style={{
                               width: "5px", height: "5px", borderRadius: "50%",
-                              background: "#d4d4d8", flexShrink: 0, marginTop: "8px",
+                              background: c.bulletDot, flexShrink: 0, marginTop: "8px",
                             }} />
                             {b}
                           </li>
@@ -419,8 +626,8 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                             padding: "3px 10px", borderRadius: "6px",
                             fontSize: "11px", fontWeight: 500,
                             fontFamily: '"JetBrains Mono", monospace',
-                            background: "#f4f4f5", color: "#52525b",
-                            border: "1px solid #e4e4e7", cursor: "default",
+                            background: c.tagBg, color: c.tagText,
+                            border: `1px solid ${c.tagBorder}`, cursor: "default",
                           }}>
                             {tech}
                           </span>
@@ -435,7 +642,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 
           {/* Experience */}
           {d.experience && d.experience.length > 0 && (
-            <CardGridSection title={<SectionChip label={t('experience', locale)} />} delay="0.15s">
+            <CardGridSection title={<SectionChip label={t('experience', locale)} c={c} />} delay="0.15s">
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {d.experience.map((exp, i) => (
                   <div key={i}
@@ -444,9 +651,9 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                     onMouseLeave={() => setHoveredExp(null)}
                     style={{
                       borderRadius: "10px", border: "1px solid",
-                      borderColor: hoveredExp === i ? "#a1a1aa" : "#e4e4e7",
-                      background: "#ffffff", padding: "20px 24px",
-                      boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                      borderColor: hoveredExp === i ? c.cardBorderHover : c.cardBorder,
+                      background: c.cardBg, padding: "20px 24px",
+                      boxShadow: c.cardShadow,
                       animationDelay: `${0.18 + i * 0.04}s`,
                     }}
                   >
@@ -459,7 +666,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center",
                           width: "32px", height: "32px", borderRadius: "8px",
-                          background: "#f4f4f5", flexShrink: 0,
+                          background: c.iconBg, flexShrink: 0,
                         }}>
                           <BriefcaseIcon />
                         </div>
@@ -467,7 +674,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                           <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                             <h3 style={{
                               fontSize: "15px", fontWeight: 600,
-                              color: "#18181b", margin: 0,
+                              color: c.headingText, margin: 0,
                             }}>
                               {exp.company}
                             </h3>
@@ -475,8 +682,8 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                               display: "inline-flex", alignItems: "center",
                               padding: "2px 8px", borderRadius: "4px",
                               fontSize: "11px", fontWeight: 500,
-                              background: "#f4f4f5", color: "#52525b",
-                              border: "1px solid #e4e4e7",
+                              background: c.badgeBg, color: c.badgeText,
+                              border: `1px solid ${c.badgeBorder}`,
                               fontFamily: '"Inter", sans-serif',
                             }}>
                               {exp.position}
@@ -485,7 +692,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         </div>
                       </div>
                       <span style={{
-                        fontSize: "12px", color: "#a1a1aa",
+                        fontSize: "12px", color: c.veryDimText,
                         fontFamily: '"JetBrains Mono", monospace',
                         whiteSpace: "nowrap",
                       }}>
@@ -494,7 +701,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                     </div>
 
                     {exp.overview && (
-                      <p style={{ fontSize: "13px", color: "#71717a", margin: "6px 0 10px 40px" }}>
+                      <p style={{ fontSize: "13px", color: c.dimText, margin: "6px 0 10px 40px" }}>
                         {exp.overview}
                       </p>
                     )}
@@ -504,12 +711,12 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         {exp.bullets.map((b, j) => (
                           <li key={j} style={{
                             display: "flex", alignItems: "flex-start", gap: "8px",
-                            fontSize: "13px", lineHeight: 1.7, color: "#3f3f46",
+                            fontSize: "13px", lineHeight: 1.7, color: c.bodyText,
                             marginBottom: "3px",
                           }}>
                             <span style={{
                               width: "5px", height: "5px", borderRadius: "50%",
-                              background: "#d4d4d8", flexShrink: 0, marginTop: "8px",
+                              background: c.bulletDot, flexShrink: 0, marginTop: "8px",
                             }} />
                             {b}
                           </li>
@@ -531,26 +738,26 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                 animationDelay: "0.25s",
               }}>
                 <div style={{ marginBottom: "14px" }}>
-                  <SectionChip label={t('education', locale)} />
+                  <SectionChip label={t('education', locale)} c={c} />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {d.education.map((edu, i) => (
                     <div key={i} className="awesome-card" style={{
-                      borderRadius: "10px", border: "1px solid #e4e4e7",
-                      background: "#ffffff", padding: "16px 18px",
-                      boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                      borderRadius: "10px", border: `1px solid ${c.eduBorder}`,
+                      background: c.eduBg, padding: "16px 18px",
+                      boxShadow: c.cardShadow,
                       animationDelay: `${0.28 + i * 0.04}s`,
                     }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center",
                           width: "28px", height: "28px", borderRadius: "6px",
-                          background: "#f4f4f5", flexShrink: 0,
+                          background: c.iconBg, flexShrink: 0,
                         }}>
                           <GraduationCapIcon />
                         </div>
                         <h3 style={{
-                          fontSize: "14px", fontWeight: 600, color: "#18181b", margin: 0,
+                          fontSize: "14px", fontWeight: 600, color: c.eduSchool, margin: 0,
                         }}>
                           {edu.school}
                         </h3>
@@ -559,15 +766,15 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         <span style={{
                           fontSize: "11px", fontWeight: 500,
                           padding: "1px 7px", borderRadius: "4px",
-                          background: "#18181b", color: "#fafafa",
+                          background: c.eduDegreeBg, color: c.eduDegreeText,
                         }}>
                           {edu.degree}
                         </span>
-                        <span style={{ fontSize: "12.5px", color: "#52525b" }}>
+                        <span style={{ fontSize: "12.5px", color: c.eduMajor }}>
                           {edu.major}
                         </span>
                         <span style={{
-                          fontSize: "11px", color: "#a1a1aa",
+                          fontSize: "11px", color: c.veryDimText,
                           fontFamily: '"JetBrains Mono", monospace',
                         }}>
                           {edu.period}
@@ -586,12 +793,12 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                 animationDelay: "0.3s",
               }}>
                 <div style={{ marginBottom: "14px" }}>
-                  <SectionChip label={t('skills', locale)} />
+                  <SectionChip label={t('skills', locale)} c={c} />
                 </div>
                 <div className="awesome-card" style={{
-                  borderRadius: "10px", border: "1px solid #e4e4e7",
-                  background: "#ffffff", padding: "16px 18px",
-                  boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                  borderRadius: "10px", border: `1px solid ${c.skillBorder}`,
+                  background: c.cardBg, padding: "16px 18px",
+                  boxShadow: c.cardShadow,
                   animationDelay: "0.33s",
                 }}>
                   <div style={{
@@ -602,8 +809,8 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                         display: "inline-flex", alignItems: "center",
                         padding: "5px 12px", borderRadius: "6px",
                         fontSize: "12px", fontWeight: 500,
-                        color: "#3f3f46", background: "#fafafa",
-                        border: "1px solid #e4e4e7", cursor: "default",
+                        color: c.skillText, background: c.skillBg,
+                        border: `1px solid ${c.skillBorder}`, cursor: "default",
                       }}>
                         {skill}
                       </span>
@@ -616,38 +823,38 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 
           {/* Appendix */}
           {d.appendix && d.appendix.length > 0 && (
-            <CardGridSection title={<SectionChip label={t('appendix', locale)} />} delay="0.35s">
+            <CardGridSection title={<SectionChip label={t('appendix', locale)} c={c} />} delay="0.35s">
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "14px" }}>
                 {d.appendix.map((item, i) => (
                   <div key={i} className="awesome-card" style={{
-                    borderRadius: "10px", border: "1px solid #e4e4e7",
-                    background: "#ffffff", overflow: "hidden",
-                    boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+                    borderRadius: "10px", border: `1px solid ${c.appendixBorder}`,
+                    background: c.appendixBg, overflow: "hidden",
+                    boxShadow: c.cardShadow,
                     animationDelay: `${0.38 + i * 0.05}s`,
                   }}>
                     <div style={{
-                      padding: "14px 18px", borderBottom: "1px solid #e4e4e7",
-                      background: "#fafafa",
+                      padding: "14px 18px", borderBottom: `1px solid ${c.appendixHeaderBorder}`,
+                      background: c.appendixHeaderBg,
                       display: "flex", alignItems: "center", justifyContent: "space-between",
                     }}>
                       <div>
                         <h4 style={{
                           fontSize: "13.5px", fontWeight: 600,
-                          color: "#18181b", margin: 0,
+                          color: c.headingText, margin: 0,
                         }}>
                           {item.title}
                         </h4>
                         {item.description && (
-                          <p style={{ fontSize: "12px", color: "#71717a", margin: "2px 0 0" }}>
+                          <p style={{ fontSize: "12px", color: c.dimText, margin: "2px 0 0" }}>
                             {item.description}
                           </p>
                         )}
                       </div>
                       <span style={{
-                        fontSize: "10px", fontWeight: 600, color: "#a1a1aa",
+                        fontSize: "10px", fontWeight: 600, color: c.appendixFigText,
                         fontFamily: '"JetBrains Mono", monospace',
                         padding: "2px 8px", borderRadius: "4px",
-                        background: "#f4f4f5", border: "1px solid #e4e4e7",
+                        background: c.appendixFigBg, border: `1px solid ${c.appendixFigBorder}`,
                       }}>
                         #{i + 1}
                       </span>
@@ -658,14 +865,14 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
                           display: "flex", flexDirection: "column",
                           alignItems: "center", justifyContent: "center",
                           minHeight: "180px", borderRadius: "6px",
-                          background: "repeating-conic-gradient(#fafafa 0% 25%, transparent 0% 50%) 50% / 16px 16px",
-                          color: "#a1a1aa", gap: "8px", border: "2px dashed #e4e4e7",
+                          background: c.imgPlaceholderBg,
+                          color: c.imgPlaceholderText, gap: "8px", border: `2px dashed ${c.imgPlaceholderBorder}`,
                         }}>
                           <ImagePlaceholderIcon />
                           <span style={{ fontSize: "12px", fontWeight: 500 }}>
                             {t('imgPasteHere', locale)}
                           </span>
-                          <span style={{ fontSize: "10px", color: "#d4d4d8" }}>
+                          <span style={{ fontSize: "10px", color: c.imgPlaceholderTextSecondary }}>
                             {t('imgPlaceholder', locale)}
                           </span>
                         </div>
@@ -689,8 +896,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en' }: { data: Re
 }
 
 // ── Helpers ──
-const projectColors = ["#f4f4f5", "#fef2f2", "#f0f9ff", "#f5f3ff", "#fefce8", "#f0fdf4"];
 
 function hasGoodColor(i: number): boolean {
-  return i >= 0 && i < projectColors.length;
+  return i >= 0;
 }

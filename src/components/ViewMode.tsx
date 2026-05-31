@@ -25,7 +25,7 @@ export default function ViewMode({ templateId, data, locale }: ViewModeProps) {
       alignItems: 'center',
     }}>
       <div ref={ref} style={{ width: '100%' }}>
-        <Preview data={data} locale={l} />
+        <Preview data={data} locale={l} theme="dark" />
       </div>
       <footer style={{
         padding: '24px 0 32px',

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { templates, getTemplate } from './templates/registry';
+import { templates, getTemplate, type ThemeMode } from './templates/registry';
 import { parseMarkdown } from './parser/markdown-parser';
 import { DEFAULT_MARKDOWN, getDefaultMarkdown } from './data/default-markdown';
 import { isViewMode, decodeShareUrl, encodeShareUrl } from './utils/share';
@@ -12,6 +12,7 @@ import HelpModal from './components/HelpModal';
 const STORAGE_KEY = 'cv-markdown:markdown';
 const TEMPLATE_KEY = 'cv-markdown:template';
 const LOCALE_KEY = 'cv-markdown:locale';
+const THEME_KEY = 'cv-markdown:theme';
 
 function loadMarkdown() {
   try {
@@ -36,6 +37,9 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [locale, setLocale] = useState<Locale>(
     () => (localStorage.getItem(LOCALE_KEY) as Locale) || detectLocale()
+  );
+  const [theme, setTheme] = useState<ThemeMode>(
+    () => (localStorage.getItem(THEME_KEY) as ThemeMode) || 'dark'
   );
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +71,14 @@ function App() {
   useEffect(() => {
     try { localStorage.setItem(LOCALE_KEY, locale); } catch {}
   }, [locale]);
+
+  useEffect(() => {
+    try { localStorage.setItem(THEME_KEY, theme); } catch {}
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(t => t === 'dark' ? 'light' : 'dark');
+  }, []);
 
   const handleToggleLocale = useCallback(() => {
     const next: Locale = locale === 'ne' ? 'en' : 'ne';
@@ -238,6 +250,31 @@ function App() {
           </button>
           <span style={{ color: '#3f3f46', fontSize: '12px' }}>|</span>
           <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '6px 10px', borderRadius: '6px',
+              border: '1px solid #3f3f46',
+              background: 'transparent', color: '#a1a1aa',
+              fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+              fontFamily: '"JetBrains Mono", monospace',
+              transition: 'all 0.15s',
+            }}
+          >
+            {theme === 'dark' ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
+          <span style={{ color: '#3f3f46', fontSize: '12px' }}>|</span>
+          <button
             onClick={handleToggleLocale}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -338,7 +375,7 @@ function App() {
           width: '50%', overflow: 'auto', background: '#f4f4f5',
         }}>
           <div ref={previewRef}>
-            <PreviewComponent data={resumeData} locale={locale} />
+            <PreviewComponent data={resumeData} locale={locale} theme={theme} />
           </div>
         </div>
       </div>

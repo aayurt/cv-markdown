@@ -22,10 +22,10 @@ function SectionHeader({ title }: { title: string }) {
   return <div className="tm-section-header">[ {title} ]</div>;
 }
 
-export default function TerminalPreview({ data, locale = 'en' }: { data: ResumeData; locale?: Locale }) {
+export default function TerminalPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const d = data;
   return (
-    <div className="tm-root">
+    <div className={`tm-root${theme === 'light' ? ' tm-root--light' : ''}`}>
       <style>{TERMINAL_CSS}</style>
 
       <div className="tm-window">
@@ -346,4 +346,31 @@ const TERMINAL_CSS = `
 .tm-statusbar { background: var(--bg-card); border-top: 1px solid var(--border); padding: 6px 16px; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-faint); }
 .tm-statusbar-group { display: flex; gap: 16px; }
 .tm-statusbar-active { color: var(--green); text-shadow: var(--glow-sm); }
+
+.tm-root--light {
+  --bg: #f5f0e8;
+  --bg-card: #fffdf8;
+  --border: #d4cdc0;
+  --border-hover: #a09888;
+  --green-faint: #e8e0d0;
+  --green-dim: #5a7a4a;
+  --green: #2d6a1e;
+  --green-mid: #3a7a2a;
+  --green-muted: #5a8a4a;
+  --green-comment: #7a9a6a;
+  --amber: #8a7a20;
+  --cyan: #1a6a7a;
+  --white: #1a1a12;
+  --text: #2d6a1e;
+  --text-dim: #6a8060;
+  --text-faint: #9aa890;
+  --glow-sm: none;
+  --glow-md: none;
+  --glow-lg: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+  --glow-text: none;
+}
+.tm-root--light .tm-body { animation: none; }
+.tm-root--light::after { display: none; }
+.tm-root--light::before { display: none; }
+.tm-root--light .tm-card:hover { border-color: var(--border-hover); box-shadow: none; }
 `;

@@ -29,7 +29,7 @@ function ContactItem({ icon, href, children }: { icon: string; href?: string; ch
   return <span className="ed-contact-item">{inner}</span>;
 }
 
-export default function EditorialPreview({ data, locale = 'en' }: { data: ResumeData; locale?: Locale }) {
+export default function EditorialPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const h = data.header;
   const SPANS = { pair: [7, 5], pairFlip: [5, 7] };
 
@@ -120,8 +120,8 @@ export default function EditorialPreview({ data, locale = 'en' }: { data: Resume
   };
 
   return (
-    <div className="ed-wrapper">
-      <style>{EDITORIAL_CSS + EDITORIAL_CSS_2}</style>
+    <div className={`ed-wrapper${theme === 'dark' ? ' ed-wrapper--dark' : ''}`}>
+      <style>{EDITORIAL_CSS + (theme === 'dark' ? EDITORIAL_CSS_DARK : '') + EDITORIAL_CSS_2}</style>
       <div className="ed-page">
         {/* Masthead */}
         <div className="ed-masthead">
@@ -332,6 +332,24 @@ const EDITORIAL_CSS = `
   flex: 1;
   height: 0.5px;
   background: var(--rule-light);
+}
+`;
+
+const EDITORIAL_CSS_DARK = `
+.ed-wrapper--dark {
+  --bg: #141210;
+  --bg-paper: #1e1c18;
+  --bg-paper-alt: #24221e;
+  --bg-ink: #0a0a08;
+  --text-1: #e0d8cc;
+  --text-2: #a8a090;
+  --text-3: #7a7262;
+  --border: #3a3632;
+  --border-strong: #5a5650;
+  --rule: #e0d8cc;
+  --rule-light: #3a3632;
+  --shadow-paper: 0 1px 2px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-paper-hover: 0 2px 4px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.35);
 }
 `;
 

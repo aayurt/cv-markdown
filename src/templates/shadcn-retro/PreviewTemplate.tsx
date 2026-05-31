@@ -3,6 +3,110 @@ import type { ResumeData } from "../../types/resume";
 import { t } from '../../i18n';
 import type { Locale } from '../../i18n';
 
+type ThemeMode = 'dark' | 'light';
+
+interface ThemeColors {
+  pageBg: string;
+  cardBg: string;
+  headerBg: string;
+  headerBgEnd: string;
+  primary: string;
+  secondary: string;
+  body: string;
+  dim: string;
+  veryDim: string;
+  headerText: string;
+  iconColor: string;
+  border: string;
+  borderLight: string;
+  borderLighter: string;
+  borderDim: string;
+  borderHover: string;
+  chipBg: string;
+  chipHover: string;
+  chipColor: string;
+  tagColor: string;
+  tagBg: string;
+  boxShadow: string;
+  scanline: string;
+  crtOverlay: string;
+  glowShadow: string;
+  glowShadowMid: string;
+  positionBadgeBg: string;
+  positionBadgeColor: string;
+  eduBadgeBg: string;
+  eduBadgeColor: string;
+  linkColor: string;
+}
+
+const DARK: ThemeColors = {
+  pageBg: "#0a0a0a",
+  cardBg: "#0d0d0d",
+  headerBg: "#0d0d0d",
+  headerBgEnd: "#111105",
+  primary: "#ffb000",
+  secondary: "#d4a040",
+  body: "#c0b080",
+  dim: "#8a7540",
+  veryDim: "#6a5530",
+  headerText: "#e0b050",
+  iconColor: "#b8860b",
+  border: "rgba(255,176,0,0.3)",
+  borderLight: "rgba(255,176,0,0.2)",
+  borderLighter: "rgba(255,176,0,0.15)",
+  borderDim: "rgba(255,176,0,0.12)",
+  borderHover: "rgba(255,176,0,0.6)",
+  chipBg: "rgba(255,176,0,0.05)",
+  chipHover: "rgba(255,176,0,0.12)",
+  chipColor: "#d4a040",
+  tagColor: "#8a7540",
+  tagBg: "transparent",
+  boxShadow: "0 0 20px rgba(255,176,0,0.05), inset 0 0 60px rgba(255,176,0,0.02)",
+  scanline: "rgba(255,176,0,0.015)",
+  crtOverlay: "radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.3) 100%)",
+  glowShadow: "0 0 4px #ffb000, 0 0 8px rgba(255,176,0,0.3)",
+  glowShadowMid: "0 0 6px #ffb000, 0 0 12px rgba(255,176,0,0.4)",
+  positionBadgeBg: "#d4a040",
+  positionBadgeColor: "#0a0a0a",
+  eduBadgeBg: "#8a7540",
+  eduBadgeColor: "#0a0a0a",
+  linkColor: "#8a7540",
+};
+
+const LIGHT: ThemeColors = {
+  pageBg: "#f5f0e8",
+  cardBg: "#fffcf5",
+  headerBg: "#fffcf5",
+  headerBgEnd: "#f5edd8",
+  primary: "#c9753a",
+  secondary: "#a0784c",
+  body: "#6b4f32",
+  dim: "#7a6040",
+  veryDim: "#5a4030",
+  headerText: "#b88a4a",
+  iconColor: "#8a6510",
+  border: "rgba(201,117,58,0.25)",
+  borderLight: "rgba(201,117,58,0.18)",
+  borderLighter: "rgba(201,117,58,0.12)",
+  borderDim: "rgba(201,117,58,0.08)",
+  borderHover: "rgba(201,117,58,0.4)",
+  chipBg: "rgba(201,117,58,0.04)",
+  chipHover: "rgba(201,117,58,0.1)",
+  chipColor: "#8a6540",
+  tagColor: "#7a6040",
+  tagBg: "transparent",
+  boxShadow: "0 0 20px rgba(201,117,58,0.05)",
+  scanline: "transparent",
+  crtOverlay: "none",
+  glowShadow: "none",
+  glowShadowMid: "none",
+  positionBadgeBg: "#c9753a",
+  positionBadgeColor: "#fffcf5",
+  eduBadgeBg: "#a0784c",
+  eduBadgeColor: "#fffcf5",
+  linkColor: "#8a6a40",
+};
+
 // ── Inline SVG Icons ──
 function GithubIcon() {
   return (
@@ -95,31 +199,31 @@ function ExternalLinkIcon() {
 }
 
 // ── Retro Section Header ──
-function SectionHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
+function SectionHeader({ icon, title, c }: { icon: React.ReactNode; title: string; c: ThemeColors }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "center",
         width: "26px", height: "26px",
-        border: "2px solid #ffb000", color: "#ffb000",
+        border: `2px solid ${c.primary}`, color: c.primary,
         flexShrink: 0,
       }}>
         {icon}
       </div>
       <h2 style={{
         fontSize: "13px", fontWeight: 400, letterSpacing: "0.15em",
-        textTransform: "uppercase", color: "#ffb000", margin: 0,
+        textTransform: "uppercase", color: c.primary, margin: 0,
         fontFamily: '"VT323", "JetBrains Mono", monospace',
       }}>
         {'> '}{title}
       </h2>
-      <div style={{ flex: 1, height: "1px", background: "rgba(255,176,0,0.25)", marginLeft: "4px" }} />
+      <div style={{ flex: 1, height: "1px", background: c.borderLight, marginLeft: "4px" }} />
     </div>
   );
 }
 
-// ── Retro Contact Chip (dark header) ──
-function RetroContactChip({ icon, text, href }: { icon: React.ReactNode; text: string; href?: string }) {
+// ── Retro Contact Chip ──
+function RetroContactChip({ icon, text, href, c }: { icon: React.ReactNode; text: string; href?: string; c: ThemeColors }) {
   const Tag = href ? "a" : "span";
   return (
     <Tag
@@ -127,42 +231,45 @@ function RetroContactChip({ icon, text, href }: { icon: React.ReactNode; text: s
       style={{
         display: "inline-flex", alignItems: "center", gap: "6px",
         padding: "4px 10px",
-        border: "1px solid rgba(255,176,0,0.3)",
-        fontSize: "12px", color: "#d4a040",
-        background: "rgba(255,176,0,0.05)",
+        border: `1px solid ${c.border}`,
+        fontSize: "12px", color: c.chipColor,
+        background: c.chipBg,
         cursor: href ? "pointer" : "default",
         transition: "all 0.15s",
         textDecoration: "none",
         fontFamily: '"JetBrains Mono", monospace',
       }}
       onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-        e.currentTarget.style.background = "rgba(255,176,0,0.12)";
-        e.currentTarget.style.color = "#ffb000";
-        e.currentTarget.style.borderColor = "rgba(255,176,0,0.6)";
+        e.currentTarget.style.background = c.chipHover;
+        e.currentTarget.style.color = c.primary;
+        e.currentTarget.style.borderColor = c.borderHover;
       }}
       onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-        e.currentTarget.style.background = "rgba(255,176,0,0.05)";
-        e.currentTarget.style.color = "#d4a040";
-        e.currentTarget.style.borderColor = "rgba(255,176,0,0.3)";
+        e.currentTarget.style.background = c.chipBg;
+        e.currentTarget.style.color = c.chipColor;
+        e.currentTarget.style.borderColor = c.border;
       }}
     >
-      <span style={{ display: "flex", color: "#b8860b" }}>{icon}</span>
+      <span style={{ display: "flex", color: c.iconColor }}>{icon}</span>
       {text}
     </Tag>
   );
 }
 
-export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: ResumeData; locale?: Locale }) {
+export default function ShadcnRetroPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: ThemeMode }) {
   const d = data;
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredExp, setHoveredExp] = useState<number | null>(null);
+  const c = theme === 'dark' ? DARK : LIGHT;
+  const isDark = theme === 'dark';
 
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0a0a0a",
+      background: c.pageBg,
       display: "flex", justifyContent: "center", padding: "40px 16px",
       fontFamily: '"JetBrains Mono", "Source Code Pro", monospace',
+      transition: "background 0.3s",
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -176,8 +283,8 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
         }
 
         @keyframes glow {
-          0%, 100% { text-shadow: 0 0 4px #ffb000, 0 0 8px rgba(255,176,0,0.3); }
-          50% { text-shadow: 0 0 6px #ffb000, 0 0 12px rgba(255,176,0,0.4); }
+          0%, 100% { text-shadow: ${c.glowShadow}; }
+          50% { text-shadow: ${c.glowShadowMid}; }
         }
 
         @keyframes fadeInUp {
@@ -186,7 +293,7 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
         }
 
         .resume-card {
-          animation: flicker 4s infinite;
+          ${isDark ? 'animation: flicker 4s infinite;' : ''}
         }
 
         .section-block {
@@ -201,8 +308,8 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
             0deg,
             transparent,
             transparent 2px,
-            rgba(255,176,0,0.015) 2px,
-            rgba(255,176,0,0.015) 4px
+            ${c.scanline} 2px,
+            ${c.scanline} 4px
           );
           pointer-events: none;
           z-index: 1;
@@ -211,32 +318,32 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
         .crt-overlay {
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.3) 100%);
+          background: ${c.crtOverlay};
           pointer-events: none;
           z-index: 1;
         }
 
         .glow-text {
-          animation: glow 3s infinite;
+          ${isDark ? 'animation: glow 3s infinite;' : ''}
         }
 
         .retro-bullet {
           display: inline-block;
           width: 6px;
           height: 6px;
-          background: #ffb000;
+          background: ${c.primary};
           margin-right: 8px;
           flex-shrink: 0;
           margin-top: 7px;
         }
 
         .chunky-border {
-          border: 2px solid #ffb000;
-          box-shadow: 3px 3px 0 rgba(255,176,0,0.15);
+          border: 2px solid ${c.primary};
+          box-shadow: 3px 3px 0 ${c.borderLight};
         }
 
         @media print {
-          body { background: #0a0a0a !important; }
+          body { background: ${c.pageBg} !important; }
           .resume-card { box-shadow: none !important; }
           .crt-overlay { display: none !important; }
           .resume-card::before { display: none !important; }
@@ -245,20 +352,22 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
 
       <div className="resume-card" style={{
         width: "100%", maxWidth: "720px",
-        background: "#0d0d0d",
-        border: "2px solid rgba(255,176,0,0.3)",
-        boxShadow: "0 0 20px rgba(255,176,0,0.05), inset 0 0 60px rgba(255,176,0,0.02)",
+        background: c.cardBg,
+        border: `2px solid ${c.border}`,
+        boxShadow: c.boxShadow,
         position: "relative", overflow: "hidden",
+        transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
       }}>
         {/* CRT overlay */}
-        <div className="crt-overlay" />
+        {isDark && <div className="crt-overlay" />}
 
         {/* HEADER */}
         <div style={{
           padding: "32px 36px 28px",
-          borderBottom: "2px solid rgba(255,176,0,0.2)",
-          background: "linear-gradient(180deg, #0d0d0d 0%, #111105 100%)",
-          color: "#e0b050", position: "relative",
+          borderBottom: `2px solid ${c.borderLighter}`,
+          background: `linear-gradient(180deg, ${c.headerBg} 0%, ${c.headerBgEnd} 100%)`,
+          color: c.headerText, position: "relative",
+          transition: "background 0.3s, border-color 0.3s",
         }}>
           <div style={{ position: "relative", zIndex: 0 }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
@@ -267,14 +376,16 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
                   fontSize: "36px", fontWeight: 400, letterSpacing: "0.02em",
                   lineHeight: 1, margin: 0,
                   fontFamily: '"VT323", monospace',
-                  color: "#ffb000",
+                  color: c.primary,
+                  transition: "color 0.3s",
                 }}>
                   {'> '}{d.header.name}
                 </h1>
                 <p className="glow-text" style={{
-                  fontSize: "14px", fontWeight: 400, color: "#d4a040",
+                  fontSize: "14px", fontWeight: 400, color: c.secondary,
                   letterSpacing: "0.05em", marginTop: "6px",
                   fontFamily: '"VT323", monospace',
+                  transition: "color 0.3s",
                 }}>
                   {d.header.title}
                 </p>
@@ -283,10 +394,11 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
                 <div style={{
                   display: "flex", alignItems: "center", gap: "6px",
                   padding: "4px 12px",
-                  border: "1px solid rgba(255,176,0,0.25)",
-                  fontSize: "11px", color: "#d4a040",
+                  border: `1px solid ${c.border}`,
+                  fontSize: "11px", color: c.chipColor,
                   fontFamily: '"JetBrains Mono", monospace',
                   letterSpacing: "0.05em",
+                  transition: "border-color 0.3s, color 0.3s",
                 }}>
                   <span style={{
                     width: "6px", height: "6px",
@@ -298,10 +410,10 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "20px" }}>
-              {d.header.github && <RetroContactChip icon={<GithubIcon />} text={d.header.github} href={`https://${d.header.github}`} />}
-              {d.header.website && <RetroContactChip icon={<GlobeIcon />} text={d.header.website} href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} />}
-              {d.header.phone && <RetroContactChip icon={<PhoneIcon />} text={d.header.phone} />}
-              {d.header.email && <RetroContactChip icon={<MailIcon />} text={d.header.email} href={`mailto:${d.header.email}`} />}
+              {d.header.github && <RetroContactChip icon={<GithubIcon />} text={d.header.github} href={`https://${d.header.github}`} c={c} />}
+              {d.header.website && <RetroContactChip icon={<GlobeIcon />} text={d.header.website} href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} c={c} />}
+              {d.header.phone && <RetroContactChip icon={<PhoneIcon />} text={d.header.phone} c={c} />}
+              {d.header.email && <RetroContactChip icon={<MailIcon />} text={d.header.email} href={`mailto:${d.header.email}`} c={c} />}
             </div>
           </div>
         </div>
@@ -311,10 +423,11 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           {/* Summary */}
           {d.summary && (
             <div className="section-block" style={{ marginBottom: "28px", animationDelay: "0.1s" }}>
-              <SectionHeader icon={<UserIcon />} title={t('summary', locale)} />
+              <SectionHeader icon={<UserIcon />} title={t('summary', locale)} c={c} />
               <p style={{
-                fontSize: "12.5px", lineHeight: 1.8, color: "#c0b080",
+                fontSize: "12.5px", lineHeight: 1.8, color: c.body,
                 paddingLeft: "38px", fontFamily: '"JetBrains Mono", monospace',
+                transition: "color 0.3s",
               }}>
                 {d.summary}
               </p>
@@ -324,7 +437,7 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           {/* Projects */}
           {d.projects && d.projects.length > 0 && (
             <div className="section-block" style={{ marginBottom: "28px", animationDelay: "0.2s" }}>
-              <SectionHeader icon={<FolderIcon />} title={t('projects', locale)} />
+              <SectionHeader icon={<FolderIcon />} title={t('projects', locale)} c={c} />
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", paddingLeft: "38px" }}>
                 {d.projects.map((proj, i) => (
                   <div key={i}
@@ -333,33 +446,34 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
                     style={{
                       padding: "14px 16px",
                       border: "1px solid",
-                      borderColor: hoveredProject === i ? "rgba(255,176,0,0.6)" : "rgba(255,176,0,0.15)",
-                      background: hoveredProject === i ? "rgba(255,176,0,0.04)" : "transparent",
-                      transition: "all 0.2s ease",
+                      borderColor: hoveredProject === i ? c.borderHover : c.borderDim,
+                      background: hoveredProject === i ? c.chipBg : "transparent",
+                      transition: "all 0.2s ease, border-color 0.3s",
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px", flexWrap: "wrap", gap: "8px" }}>
                       <h3 style={{
-                        fontSize: "14px", fontWeight: 500, color: "#ffb000",
+                        fontSize: "14px", fontWeight: 500, color: c.primary,
                         fontFamily: '"VT323", monospace', letterSpacing: "0.02em",
+                        transition: "color 0.3s",
                       }}>
                         {'>'} {proj.name}
                       </h3>
                       {proj.repo && (
                         <a href={`https://${proj.repo}`} target="_blank" rel="noopener noreferrer"
-                          style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", color: "#8a7540", textDecoration: "none", fontFamily: '"JetBrains Mono", monospace' }}>
+                          style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", color: c.linkColor, textDecoration: "none", fontFamily: '"JetBrains Mono", monospace', transition: "color 0.3s" }}>
                           <GithubIcon /> {proj.repo.split("/").slice(-1)[0]} <ExternalLinkIcon />
                         </a>
                       )}
                     </div>
-                    {proj.overview && <p style={{ fontSize: "12px", color: "#8a7540", marginBottom: "8px" }}>{'> '}{proj.overview}</p>}
+                    {proj.overview && <p style={{ fontSize: "12px", color: c.dim, marginBottom: "8px", transition: "color 0.3s" }}>{'> '}{proj.overview}</p>}
                     {proj.bullets && (
                       <ul style={{ listStyle: "none", padding: 0, margin: "0 0 10px 0" }}>
                         {proj.bullets.map((b, j) => (
                           <li key={j} style={{
                             display: "flex", alignItems: "flex-start",
-                            fontSize: "12px", lineHeight: 1.7, color: "#c0b080",
-                            marginBottom: "3px",
+                            fontSize: "12px", lineHeight: 1.7, color: c.body, marginBottom: "3px",
+                            transition: "color 0.3s",
                           }}>
                             <span className="retro-bullet" />
                             {b}
@@ -374,7 +488,8 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
                             display: "inline-flex", alignItems: "center", padding: "2px 8px",
                             fontSize: "10px", fontWeight: 400, letterSpacing: "0.05em",
                             fontFamily: '"JetBrains Mono", monospace',
-                            border: "1px solid rgba(255,176,0,0.2)", color: "#8a7540",
+                            border: `1px solid ${c.borderLight}`, color: c.tagColor, background: c.tagBg,
+                            transition: "color 0.3s, border-color 0.3s",
                           }}>
                             {tech}
                           </span>
@@ -390,7 +505,7 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           {/* Experience */}
           {d.experience && d.experience.length > 0 && (
             <div className="section-block" style={{ marginBottom: "28px", animationDelay: "0.3s" }}>
-              <SectionHeader icon={<BriefcaseIcon />} title={t('experience', locale)} />
+              <SectionHeader icon={<BriefcaseIcon />} title={t('experience', locale)} c={c} />
               <div style={{ display: "flex", flexDirection: "column", gap: "16px", paddingLeft: "38px" }}>
                 {d.experience.map((exp, i) => (
                   <div key={i}
@@ -399,50 +514,54 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
                     style={{
                       position: "relative", paddingLeft: "20px",
                       borderLeft: "2px solid",
-                      borderColor: hoveredExp === i ? "#ffb000" : "rgba(255,176,0,0.2)",
+                      borderColor: hoveredExp === i ? c.primary : c.borderLight,
                       transition: "border-color 0.2s ease",
                     }}
                   >
                     <div style={{
                       position: "absolute", left: "-6px", top: "4px",
                       width: "10px", height: "10px",
-                      background: hoveredExp === i ? "#ffb000" : "transparent",
+                      background: hoveredExp === i ? c.primary : "transparent",
                       border: "2px solid",
-                      borderColor: hoveredExp === i ? "#ffb000" : "rgba(255,176,0,0.3)",
+                      borderColor: hoveredExp === i ? c.primary : c.border,
                       transition: "all 0.2s ease",
                     }} />
                     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "4px", marginBottom: "4px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                         <h3 style={{
-                          fontSize: "14px", fontWeight: 500, color: "#ffb000",
+                          fontSize: "14px", fontWeight: 500, color: c.primary,
                           fontFamily: '"VT323", monospace',
+                          transition: "color 0.3s",
                         }}>
                           {'>'} {exp.company}
                         </h3>
                         <span style={{
                           fontSize: "10px", letterSpacing: "0.1em",
-                          color: "#0a0a0a", background: "#d4a040",
+                          color: c.positionBadgeColor, background: c.positionBadgeBg,
                           padding: "1px 8px", fontWeight: 500,
                           fontFamily: '"JetBrains Mono", monospace',
                           textTransform: "uppercase",
+                          transition: "background 0.3s, color 0.3s",
                         }}>
                           {exp.position}
                         </span>
                       </div>
                       <span style={{
-                        fontSize: "11px", color: "#8a7540",
+                        fontSize: "11px", color: c.dim,
                         fontFamily: '"JetBrains Mono", monospace',
+                        transition: "color 0.3s",
                       }}>
                         {exp.period}
                       </span>
                     </div>
-                    {exp.overview && <p style={{ fontSize: "12px", color: "#8a7540", margin: "2px 0 8px" }}>{'> '}{exp.overview}</p>}
+                    {exp.overview && <p style={{ fontSize: "12px", color: c.dim, margin: "2px 0 8px", transition: "color 0.3s" }}>{'> '}{exp.overview}</p>}
                     {exp.bullets && (
                       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                         {exp.bullets.map((b, j) => (
                           <li key={j} style={{
                             display: "flex", alignItems: "flex-start",
-                            fontSize: "12px", lineHeight: 1.7, color: "#c0b080", marginBottom: "2px",
+                            fontSize: "12px", lineHeight: 1.7, color: c.body, marginBottom: "2px",
+                            transition: "color 0.3s",
                           }}>
                             <span className="retro-bullet" />
                             {b}
@@ -459,37 +578,41 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           {/* Education */}
           {d.education && d.education.length > 0 && (
             <div className="section-block" style={{ marginBottom: "28px", animationDelay: "0.4s" }}>
-              <SectionHeader icon={<GraduationCapIcon />} title={t('education', locale)} />
+              <SectionHeader icon={<GraduationCapIcon />} title={t('education', locale)} c={c} />
               <div style={{ paddingLeft: "38px", display: "flex", flexDirection: "column", gap: "8px" }}>
                 {d.education.map((edu, i) => (
                   <div key={i} style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     flexWrap: "wrap", gap: "8px", padding: "10px 14px",
-                    border: "1px solid rgba(255,176,0,0.12)",
-                    background: "rgba(255,176,0,0.02)",
+                    border: `1px solid ${c.borderDim}`,
+                    background: c.chipBg,
+                    transition: "border-color 0.3s, background 0.3s",
                   }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                       <h3 style={{
-                        fontSize: "13px", fontWeight: 500, color: "#e0b050",
+                        fontSize: "13px", fontWeight: 500, color: c.headerText,
                         fontFamily: '"VT323", monospace',
+                        transition: "color 0.3s",
                       }}>
                         {'>'} {edu.school}
                       </h3>
                       <span style={{
                         fontSize: "10px", letterSpacing: "0.08em",
-                        color: "#0a0a0a", background: "#8a7540",
+                        color: c.eduBadgeColor, background: c.eduBadgeBg,
                         padding: "1px 7px", fontWeight: 500,
                         fontFamily: '"JetBrains Mono", monospace',
+                        transition: "background 0.3s, color 0.3s",
                       }}>
                         {edu.degree}
                       </span>
-                      <span style={{ fontSize: "12px", color: "#8a7540", fontFamily: '"JetBrains Mono", monospace' }}>
+                      <span style={{ fontSize: "12px", color: c.dim, fontFamily: '"JetBrains Mono", monospace', transition: "color 0.3s" }}>
                         {edu.major}
                       </span>
                     </div>
                     <span style={{
-                      fontSize: "11px", color: "#6a5530",
+                      fontSize: "11px", color: c.veryDim,
                       fontFamily: '"JetBrains Mono", monospace',
+                      transition: "color 0.3s",
                     }}>
                       {edu.period}
                     </span>
@@ -502,19 +625,19 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           {/* Skills */}
           {d.skills && d.skills.length > 0 && (
             <div className="section-block" style={{ animationDelay: "0.5s" }}>
-              <SectionHeader icon={<ZapIcon />} title={t('skills', locale)} />
+              <SectionHeader icon={<ZapIcon />} title={t('skills', locale)} c={c} />
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", paddingLeft: "38px" }}>
                 {d.skills.map((skill, i) => (
                   <span key={i} style={{
                     display: "inline-flex", alignItems: "center", padding: "5px 12px",
-                    fontSize: "11px", color: "#c0b080",
-                    border: "1px solid rgba(255,176,0,0.2)",
+                    fontSize: "11px", color: c.tagColor,
+                    border: `1px solid ${c.borderLight}`,
                     fontFamily: '"JetBrains Mono", monospace',
                     cursor: "default",
-                    transition: "all 0.15s",
+                    transition: "all 0.15s, color 0.3s, border-color 0.3s",
                   }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,176,0,0.1)"; e.currentTarget.style.color = "#ffb000"; e.currentTarget.style.borderColor = "rgba(255,176,0,0.5)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#c0b080"; e.currentTarget.style.borderColor = "rgba(255,176,0,0.2)"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = c.chipBg; e.currentTarget.style.color = c.primary; e.currentTarget.style.borderColor = c.borderHover; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = c.tagColor; e.currentTarget.style.borderColor = c.borderLight; }}
                   >
                     {'>'} {skill}
                   </span>
@@ -527,15 +650,16 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
         {/* FOOTER */}
         <div className="resume-footer" style={{
           padding: "14px 36px",
-          borderTop: "2px solid rgba(255,176,0,0.15)",
+          borderTop: `2px solid ${c.borderLighter}`,
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          background: "linear-gradient(0deg, #0a0a0a 0%, #0d0d0d 100%)",
+          background: `linear-gradient(0deg, ${c.pageBg} 0%, ${c.cardBg} 100%)`,
+          transition: "border-color 0.3s, background 0.3s",
         }}>
-          <span style={{ fontSize: "10px", color: "#6a5530", fontFamily: '"JetBrains Mono", monospace', letterSpacing: "0.05em" }}>
+          <span style={{ fontSize: "10px", color: c.veryDim, fontFamily: '"JetBrains Mono", monospace', letterSpacing: "0.05em", transition: "color 0.3s" }}>
             [cv-markdown] -- retro
           </span>
-          <span style={{ fontSize: "10px", color: "#6a5530", fontFamily: '"VT323", monospace', letterSpacing: "0.05em" }}>
-            _SYSTEM OK
+          <span style={{ fontSize: "10px", color: c.veryDim, fontFamily: '"VT323", monospace', letterSpacing: "0.05em", transition: "color 0.3s" }}>
+            {isDark ? '_SYSTEM OK' : '_LIGHT MODE'}
           </span>
         </div>
       </div>

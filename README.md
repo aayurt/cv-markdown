@@ -116,56 +116,88 @@ Description text here.
 
 ### Agent Prompt
 
-Give this prompt to any AI agent (Claude, ChatGPT, etc.) to generate resume markdown in the correct format:
+Give this prompt to any AI agent (Gemini, Claude, ChatGPT, etc.) to generate resume markdown in the correct format:
 
-```
-You are a resume markdown generator. Generate a resume in the exact format below.
-Use real-looking placeholder content.
+````
+Generate a resume in the EXACT markdown format shown below. Replace the example content with the user's real information.
 
-Format rules:
+RULES:
 - Frontmatter between --- lines: name, title, phone, email, github, website, status
 - Sections start with ## (accepted: Summary, Experience, Projects, Education, Skills, Appendix)
 - Entries within sections start with ###, fields separated by |
 - Bullet points start with "- "
 - Overview/context lines start with "> "
-- Tech tags are backtick-wrapped like `React` `TypeScript`
+- Tech tags in backticks like `React` `TypeScript`
 - Images use markdown: ![alt](url)
 
-Template:
+FORMAT (keep this exact structure):
+```
 ---
-name: <name>
-title: <job title>
-phone: "<phone>"
-email: <email>
-github: github.com/<handle>
-website: <website>
+name: Jane Doe
+title: Senior Software Engineer
+phone: "+1 555 123 4567"
+email: jane@example.com
+github: github.com/janedoe
+website: janedoe.com
 status: Open to work
 ---
 
 ## Summary
 
-<1-2 sentence professional summary>
+Full-stack engineer with 6+ years building scalable web applications, distributed systems, and developer tools. Passionate about clean architecture and developer experience.
 
 ## Experience
 
-### <Company> | <Position> | <Start> – <End>
-> <optional role overview>
+### Acme Corp | Senior Software Engineer | Jan 2022 – Present
+> Led the platform team building real-time infrastructure
 
-- <achievement bullet>
-- <achievement bullet>
-`<tech>` `<tech>`
+- Designed and deployed a WebSocket-based notification system handling 50k+ concurrent connections
+- Migrated legacy monolith to microservices, reducing deployment time by 80%
+- Mentored 4 junior engineers through structured code review and pair programming
+
+`React` `Node.js` `TypeScript` `WebSockets` `Redis`
+
+### Beta Inc | Software Engineer | Mar 2019 – Dec 2021
+- Built RESTful APIs serving 1M+ daily requests with 99.9% uptime
+- Implemented CI/CD pipeline reducing release cycle from 2 weeks to daily
+
+`Python` `Django` `PostgreSQL` `Docker`
+
+## Projects
+
+### Payload CMS Starter | github.com/janedoe/payload-starter
+> A production-ready starter template for Payload CMS
+
+- Built authentication, RBAC, and multi-tenant support out of the box
+- 500+ GitHub stars and used by 3 production applications
+
+`TypeScript` `Payload CMS` `React`
 
 ## Education
 
-### <School> | <Degree> | <Major> | <Period>
+### MIT | MSc | Computer Science | 2017 – 2019
+### UC Berkeley | BSc | Electrical Engineering | 2013 – 2017
 
 ## Skills
 
-- <skill>
-- <skill>
+- TypeScript / JavaScript
+- React, Next.js
+- Node.js, Python
+- PostgreSQL, Redis
+- Docker, AWS
+- System Design
 
-Generate ONLY valid markdown — no explanation, no commentary.
+## Appendix
+
+### AWS Solutions Architect Certification
+
+Professional level certification covering distributed system design on AWS.
+
+![certificate](https://example.com/cert.png)
 ```
+
+Generate ONLY the markdown block above — no introductory text, no explanation, no commentary. Replace the example content with the user's actual information.
+````
 
 ### Tech Stack
 

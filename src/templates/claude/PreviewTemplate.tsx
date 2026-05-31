@@ -40,10 +40,10 @@ const icons = {
   mail: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
 };
 
-export default function ClaudePreview({ data, locale = 'en' }: { data: ResumeData; locale?: Locale }) {
+export default function ClaudePreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const d = data;
   return (
-    <div className="cl-root">
+    <div className={`cl-root${theme === 'dark' ? ' cl-root--dark' : ''}`}>
       <style>{CLAUDE_CSS}</style>
 
       <div className="cl-container">
@@ -397,6 +397,20 @@ const CLAUDE_CSS = `
   font-family: var(--font-mono); letter-spacing: 0.03em;
 }
 .cl-dot { display: inline-block; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; margin: 0 10px; vertical-align: middle; }
+
+.cl-root--dark {
+  --bg-primary: #1a1612;
+  --bg-secondary: #221e1a;
+  --bg-card: #2a2622;
+  --bg-code: #221e1a;
+  --text-primary: #e8e0d8;
+  --text-secondary: #a89e90;
+  --text-tertiary: #7a7062;
+  --accent: #f59e0b;
+  --accent-light: #3a3020;
+  --border: #4a4438;
+  --border-light: #3a3428;
+}
 
 /* Animations */
 @keyframes cl-slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }

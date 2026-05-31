@@ -53,7 +53,7 @@ export default function PlainPreview({ data, locale = 'en' }: { data: ResumeData
     <div style={{
       background: "#fff",
       fontFamily: '"Times New Roman", Times, Georgia, serif',
-      padding: "48px 52px",
+      padding: "24px 28px",
       maxWidth: "700px",
       margin: "0 auto",
     }}>

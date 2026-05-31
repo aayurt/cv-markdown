@@ -82,7 +82,8 @@ function App() {
     if (!printWindow) return;
 
     const previewHtml = previewRef.current.innerHTML;
-    const title = `${resumeData.header.name || 'Resume'} Resume`;
+    const tpl = getTemplate(templateId);
+    const title = `${resumeData.header.name || 'Resume'} Resume - ${tpl.name}`;
     printWindow.document.title = title;
 
     printWindow.document.write(`<!DOCTYPE html>
@@ -108,7 +109,6 @@ function App() {
   body > div {
     min-height: auto !important;
     background: white !important;
-    padding: 0 !important;
     display: block !important;
   }
 
@@ -121,8 +121,18 @@ function App() {
 
   .resume-card,
   .section-block,
-  .bullet-item {
+  .bullet-item,
+  .awesome-card,
+  .awesome-section {
     animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .awesome-badge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: scale(1) !important;
   }
 
   .resume-footer {
@@ -154,13 +164,14 @@ function App() {
     } else {
       printWindow.onload = () => setTimeout(triggerPrint, 500);
     }
-  }, [resumeData]);
+  }, [resumeData, templateId]);
 
   const handleExportHtml = useCallback(() => {
     if (!previewRef.current) return;
-    const title = `${resumeData.header.name || 'Resume'} Resume`;
+    const tpl = getTemplate(templateId);
+    const title = `${resumeData.header.name || 'Resume'} Resume - ${tpl.name}`;
     exportHtml(previewRef.current, title);
-  }, [resumeData]);
+  }, [resumeData, templateId]);
 
   const handleShareLink = useCallback(() => {
     const url = encodeShareUrl(templateId, resumeData);

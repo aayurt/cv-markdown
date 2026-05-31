@@ -7,6 +7,7 @@ import { exportHtml } from './utils/export-html';
 import { t, detectLocale } from './i18n';
 import type { Locale } from './i18n';
 import ViewMode from './components/ViewMode';
+import HelpModal from './components/HelpModal';
 
 const STORAGE_KEY = 'cv-markdown:markdown';
 const TEMPLATE_KEY = 'cv-markdown:template';
@@ -32,6 +33,7 @@ function App() {
     () => localStorage.getItem(TEMPLATE_KEY) || 'shadcn'
   );
   const [toast, setToast] = useState('');
+  const [showHelp, setShowHelp] = useState(false);
   const [locale, setLocale] = useState<Locale>(
     () => (localStorage.getItem(LOCALE_KEY) as Locale) || detectLocale()
   );
@@ -220,6 +222,22 @@ function App() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
+            onClick={() => setShowHelp(true)}
+            title="Markdown structure guide"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              padding: '6px 10px', borderRadius: '6px',
+              border: '1px solid #3f3f46',
+              background: 'transparent', color: '#a1a1aa',
+              fontSize: '13px', fontWeight: 600, cursor: 'pointer',
+              fontFamily: '"JetBrains Mono", monospace',
+              transition: 'all 0.15s',
+            }}
+          >
+            ?
+          </button>
+          <span style={{ color: '#3f3f46', fontSize: '12px' }}>|</span>
+          <button
             onClick={handleToggleLocale}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -324,6 +342,9 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Help Modal */}
+      {showHelp && <HelpModal locale={locale} onClose={() => setShowHelp(false)} />}
 
       {/* Toast */}
       {toast && (

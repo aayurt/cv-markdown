@@ -32,6 +32,12 @@ const messages: Record<Locale, Record<string, string>> = {
     imgPlaceholder: 'Markdown मा ![alt](url) प्रयोग गरेर तस्वीर सम्मिलित गर्नुहोस्',
     imgPasteHere: 'यहाँ तस्वीर टाँस्नुहोस्',
     techStack: 'प्रविधि स्ट्याक',
+    // Help modal
+    helpTitle: 'मार्कडाउन संरचना',
+    helpSubtitle: 'cv-markdown ले तपाईंको रिजुमे कसरी पार्स गर्छ भन्ने कुरा यहाँ छ',
+    helpStructure: 'संरचना',
+    helpAgentPrompt: 'एजेन्ट प्रम्प्ट',
+    helpAgentDesc: 'यो प्रम्प्ट कुनै पनि AI एजेन्ट (Claude, ChatGPT, आदि) लाई दिनुहोस् ताकि यसले सही ढाँचामा रिजुमे मार्कडाउन उत्पन्न गर्न सकोस्:',
   },
   en: {
     // UI
@@ -64,6 +70,12 @@ const messages: Record<Locale, Record<string, string>> = {
     imgPlaceholder: 'Use ![alt](url) in Markdown to insert image',
     imgPasteHere: 'Paste image here',
     techStack: 'Tech Stack',
+    // Help modal
+    helpTitle: 'Markdown Structure',
+    helpSubtitle: 'How cv-markdown parses your resume',
+    helpStructure: 'Structure',
+    helpAgentPrompt: 'Agent Prompt',
+    helpAgentDesc: 'Give this prompt to any AI agent (Claude, ChatGPT, etc.) to generate resume markdown in the correct format:',
   },
 };
 

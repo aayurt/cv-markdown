@@ -4,11 +4,13 @@ export const SAMPLE_DATA: ResumeData = {
   header: {
     name: "Aayurt Shrestha",
     title: "Full-stack Software Engineer",
-    github: "github.com/aayurt",
-    website: "aayurtshrestha.com.np",
-    phone: "+977 9843516471",
-    email: "aayurtshrestha@gmail.com",
     status: "Open to work",
+    contacts: [
+      { type: "github", value: "github.com/aayurt" },
+      { type: "website", value: "aayurtshrestha.com.np" },
+      { type: "phone", value: "+977 9843516471" },
+      { type: "email", value: "aayurtshrestha@gmail.com" },
+    ],
   },
   summary:
     "Full-stack Software Engineer with 5+ years of experience designing and building scalable distributed systems, multi-tenant SaaS platforms, and real-time applications. Experienced in architecting high-concurrency WebSocket systems, event-driven microservices, and batch/streaming data pipelines.",

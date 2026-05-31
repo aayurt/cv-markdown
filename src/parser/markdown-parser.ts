@@ -4,6 +4,8 @@ import type {
   ExperienceItem,
   EducationItem,
   AppendixItem,
+  ContactType,
+  ContactItem,
 } from '../types/resume';
 
 function parseFrontmatter(markdown: string): { data: Record<string, string>; content: string } {
@@ -32,14 +34,16 @@ function parseFrontmatter(markdown: string): { data: Record<string, string>; con
 export function parseMarkdown(markdown: string): ResumeData {
   const { data: frontmatter, content } = parseFrontmatter(markdown);
 
+  const contactTypes = new Set<string>(['phone', 'email', 'github', 'website', 'linkedin']);
+  const contacts: ContactItem[] = Object.keys(frontmatter)
+    .filter(key => contactTypes.has(key))
+    .map(key => ({ type: key as ContactType, value: frontmatter[key] }));
+
   const header: ResumeData['header'] = {
     name: frontmatter.name || '',
     title: frontmatter.title || '',
-    phone: frontmatter.phone,
-    email: frontmatter.email,
-    github: frontmatter.github,
-    website: frontmatter.website,
     status: frontmatter.status,
+    contacts,
   };
 
   const sections = splitSections(content);

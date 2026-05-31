@@ -127,10 +127,9 @@ export default function PlainPreview({ data, locale = 'en', theme = 'dark' }: { 
           marginTop: "6px", fontSize: "10.5px", color: c.dimText,
           fontFamily: '"Times New Roman", Times, Georgia, serif',
         }}>
-          {d.header.phone && <span>{d.header.phone}</span>}
-          {d.header.email && <span>{d.header.email}</span>}
-          {d.header.github && <span>{d.header.github}</span>}
-          {d.header.website && <span>{d.header.website}</span>}
+                {d.header.contacts?.map((contact, i) => (
+                  <span key={i}>{contact.value}</span>
+                ))}
         </div>
         {d.header.status && (
           <span style={{

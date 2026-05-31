@@ -10,6 +10,7 @@ const RESUME_DATA = {
     title: "Full-stack Software Engineer",
     github: "github.com/aayurt",
     website: "aayurtshrestha.com.np",
+    linkedin: "linkedin.com/in/aayurtshrestha",
     phone: "+977 9843516471",
     email: "aayurtshrestha@gmail.com",
   },
@@ -123,6 +124,16 @@ function MailIcon() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect width="20" height="16" x="2" y="4" rx="2" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <path d="M2 9h4v12H2z" />
+      <circle cx="4" cy="4" r="2" />
     </svg>
   );
 }
@@ -301,6 +312,13 @@ export default function Resume() {
   const d = RESUME_DATA;
   const [hoveredProject, setHoveredProject] = useState(null);
   const [hoveredExp, setHoveredExp] = useState(null);
+  const contactCfg = {
+    phone: { icon: <PhoneIcon /> },
+    email: { icon: <MailIcon /> },
+    github: { icon: <GithubIcon /> },
+    website: { icon: <GlobeIcon /> },
+    linkedin: { icon: <LinkedInIcon /> },
+  };
 
   return (
     <div
@@ -433,10 +451,11 @@ export default function Resume() {
                 marginTop: "20px",
               }}
             >
-              <ContactChipDark icon={<GithubIcon />} text={d.header.github} />
-              <ContactChipDark icon={<GlobeIcon />} text={d.header.website} />
-              <ContactChipDark icon={<PhoneIcon />} text={d.header.phone} />
-              <ContactChipDark icon={<MailIcon />} text={d.header.email} />
+              {d.header.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                return <ContactChipDark key={i} icon={cfg.icon} text={contact.value} />;
+              })}
             </div>
           </div>
         </div>

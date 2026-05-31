@@ -29,6 +29,14 @@ function ContactItem({ icon, href, children }: { icon: string; href?: string; ch
   return <span className="ed-contact-item">{inner}</span>;
 }
 
+const contactCfg: Record<string, { icon: string; href: (v: string) => string | undefined }> = {
+  phone: { icon: "☎", href: () => undefined },
+  email: { icon: "✉", href: (v) => `mailto:${v}` },
+  github: { icon: "⌘", href: (v) => `https://${v}` },
+  website: { icon: "◎", href: (v) => `https://${v}` },
+  linkedin: { icon: "🔗", href: (v) => `https://${v}` },
+};
+
 export default function EditorialPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const h = data.header;
   const SPANS = { pair: [7, 5], pairFlip: [5, 7] };
@@ -143,10 +151,11 @@ export default function EditorialPreview({ data, locale = 'en', theme = 'dark' }
           <div className="ed-card ed-card--contact ed-span-4">
             <Tag>Contact</Tag>
             <ul className="ed-contact-list">
-              {h.github && <ContactItem icon="⌘" href={`https://${h.github}`}>{h.github}</ContactItem>}
-              {h.website && <ContactItem icon="◎" href={`https://${h.website}`}>{h.website}</ContactItem>}
-              {h.phone && <ContactItem icon="☎">{h.phone}</ContactItem>}
-              {h.email && <ContactItem icon="✉" href={`mailto:${h.email}`}>{h.email}</ContactItem>}
+              {h.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                return <ContactItem key={i} icon={cfg.icon} href={cfg.href(contact.value)}>{contact.value}</ContactItem>;
+              })}
             </ul>
           </div>
         </div>

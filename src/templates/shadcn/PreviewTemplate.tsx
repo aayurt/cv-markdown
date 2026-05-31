@@ -3,7 +3,7 @@ import type { ResumeData } from "../../types/resume";
 import { t } from '../../i18n';
 import type { Locale } from '../../i18n';
 import {
-  GithubIcon, GlobeIcon, PhoneIcon, MailIcon,
+  GithubIcon, GlobeIcon, LinkedInIcon, PhoneIcon, MailIcon,
   BriefcaseIcon, GraduationCapIcon, UserIcon, ZapIcon,
   FolderIcon, PaperclipIcon, ExternalLinkIcon, ImagePlaceholderIcon,
 } from "./icons";
@@ -264,6 +264,13 @@ export default function ShadcnPreview({ data, locale = 'en', theme = 'dark' }: {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredExp, setHoveredExp] = useState<number | null>(null);
   const c = theme === 'dark' ? DARK : LIGHT;
+  const contactCfg: Record<string, { icon: React.ReactNode; href: (v: string) => string }> = {
+    phone: { icon: <PhoneIcon />, href: (v) => `tel:${v.replace(/[-\s]/g, "")}` },
+    email: { icon: <MailIcon />, href: (v) => `mailto:${v}` },
+    github: { icon: <GithubIcon />, href: (v) => `https://${v}` },
+    website: { icon: <GlobeIcon />, href: (v) => (v.startsWith("http") ? v : `https://${v}`) },
+    linkedin: { icon: <LinkedInIcon />, href: (v) => `https://${v}` },
+  };
 
   return (
     <div
@@ -335,10 +342,11 @@ export default function ShadcnPreview({ data, locale = 'en', theme = 'dark' }: {
               )}
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "20px" }}>
-              {d.header.github && <ContactChipDark icon={<GithubIcon />} text={d.header.github} href={`https://${d.header.github}`} c={c} />}
-              {d.header.website && <ContactChipDark icon={<GlobeIcon />} text={d.header.website} href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} c={c} />}
-              {d.header.phone && <ContactChipDark icon={<PhoneIcon />} text={d.header.phone} href={`tel:${d.header.phone.replace(/[-\s]/g, "")}`} c={c} />}
-              {d.header.email && <ContactChipDark icon={<MailIcon />} text={d.header.email} href={`mailto:${d.header.email}`} c={c} />}
+              {d.header.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                return <ContactChipDark key={i} icon={cfg.icon} text={contact.value} href={cfg.href(contact.value)} c={c} />;
+              })}
             </div>
           </div>
         </div>

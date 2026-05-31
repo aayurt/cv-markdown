@@ -7,6 +7,7 @@ phone: "+977 9843516471"
 email: aayurtshrestha@gmail.com
 github: github.com/aayurt
 website: aayurtshrestha.com.np
+linkedin: linkedin.com/in/aayurtshrestha
 status: Open to work
 ---
 
@@ -71,6 +72,7 @@ phone: "+977 9843516471"
 email: aayurtshrestha@gmail.com
 github: github.com/aayurt
 website: aayurtshrestha.com.np
+linkedin: linkedin.com/in/aayurtshrestha
 status: Open to work
 ---
 

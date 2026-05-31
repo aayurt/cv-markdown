@@ -238,6 +238,16 @@ function MailIcon() {
   );
 }
 
+function LinkedInIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <path d="M2 9h4v12H2z" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  );
+}
+
 function BriefcaseIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -317,9 +327,16 @@ function CardGridSection({ title, children, delay }: { title: React.ReactNode; c
 
 export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const d = data;
-  const c = theme === 'dark' ? DARK : LIGHT;
-  const [hoveredProj, setHoveredProj] = useState<number | null>(null);
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredExp, setHoveredExp] = useState<number | null>(null);
+  const c = theme === 'dark' ? DARK : LIGHT;
+  const contactCfg: Record<string, { icon: React.ReactNode; href: (v: string) => string }> = {
+    phone: { icon: <PhoneIcon />, href: (v) => `tel:${v.replace(/[-\s]/g, "")}` },
+    email: { icon: <MailIcon />, href: (v) => `mailto:${v}` },
+    github: { icon: <GithubIcon />, href: (v) => `https://${v}` },
+    website: { icon: <GlobeIcon />, href: (v) => (v.startsWith("http") ? v : `https://${v}`) },
+    linkedin: { icon: <LinkedInIcon />, href: (v) => `https://${v}` },
+  };
 
   return (
     <div style={{
@@ -451,71 +468,27 @@ export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dar
               display: "flex", flexWrap: "wrap", gap: "8px",
               marginTop: "20px",
             }}>
-              {d.header.github && (
-                <a href={`https://${d.header.github}`} target="_blank" rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    padding: "6px 14px", borderRadius: "8px",
-                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
-                    fontSize: "13px", color: c.chipText,
-                    cursor: "pointer", transition: "all 0.15s",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
-                >
-                  <GithubIcon /> {d.header.github}
-                </a>
-              )}
-              {d.header.website && (
-                <a href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`}
-                  target="_blank" rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    padding: "6px 14px", borderRadius: "8px",
-                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
-                    fontSize: "13px", color: c.chipText,
-                    cursor: "pointer", transition: "all 0.15s",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
-                >
-                  <GlobeIcon /> {d.header.website.replace(/^https?:\/\//, "")}
-                </a>
-              )}
-              {d.header.phone && (
-                <a href={`tel:${d.header.phone.replace(/[-\s]/g, "")}`}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    padding: "6px 14px", borderRadius: "8px",
-                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
-                    fontSize: "13px", color: c.chipText,
-                    cursor: "pointer", transition: "all 0.15s",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
-                >
-                  <PhoneIcon /> {d.header.phone}
-                </a>
-              )}
-              {d.header.email && (
-                <a href={`mailto:${d.header.email}`}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    padding: "6px 14px", borderRadius: "8px",
-                    border: `1px solid ${c.chipBorder}`, background: c.chipBg,
-                    fontSize: "13px", color: c.chipText,
-                    cursor: "pointer", transition: "all 0.15s",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
-                >
-                  <MailIcon /> {d.header.email}
-                </a>
-              )}
+              {d.header.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                const href = cfg.href(contact.value);
+                return (
+                  <a key={i} href={href} target="_blank" rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "6px",
+                      padding: "6px 14px", borderRadius: "8px",
+                      border: `1px solid ${c.chipBorder}`, background: c.chipBg,
+                      fontSize: "13px", color: c.chipText,
+                      cursor: "pointer", transition: "all 0.15s",
+                      textDecoration: "none",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = c.chipHoverBorder; e.currentTarget.style.background = c.chipHoverBg; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = c.chipBorder; e.currentTarget.style.background = c.chipBg; }}
+                  >
+                    {cfg.icon} {contact.value}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -549,11 +522,11 @@ export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dar
                 {d.projects.map((proj, i) => (
                   <div key={i}
                     className="awesome-card"
-                    onMouseEnter={() => setHoveredProj(i)}
-                    onMouseLeave={() => setHoveredProj(null)}
+                    onMouseEnter={() => setHoveredProject(i)}
+                    onMouseLeave={() => setHoveredProject(null)}
                     style={{
                       borderRadius: "10px", border: "1px solid",
-                      borderColor: hoveredProj === i ? c.cardBorderHover : c.cardBorder,
+                      borderColor: hoveredProject === i ? c.cardBorderHover : c.cardBorder,
                       background: c.cardBg, padding: "20px 24px",
                       boxShadow: c.cardShadow,
                       animationDelay: `${0.12 + i * 0.04}s`,

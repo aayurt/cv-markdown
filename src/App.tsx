@@ -22,6 +22,22 @@ function loadMarkdown() {
   }
 }
 
+type PageSize = 'whole' | 'a4' | 'letter';
+type MarginSize = 'none' | 'small' | 'medium' | 'large';
+
+const PAGE_SIZES: Record<PageSize, { width: number; height?: number }> = {
+  whole: { width: 210 },
+  a4: { width: 210, height: 297 },
+  letter: { width: 215.9, height: 279.4 },
+};
+
+const MARGINS: Record<MarginSize, number> = {
+  none: 0,
+  small: 10,
+  medium: 15,
+  large: 20,
+};
+
 function App() {
   // View mode: render shared resume without editor
   const [viewPayload] = useState(() => isViewMode() ? decodeShareUrl(window.location.hash) : null);
@@ -41,6 +57,9 @@ function App() {
   const [theme, setTheme] = useState<ThemeMode>(
     () => (localStorage.getItem(THEME_KEY) as ThemeMode) || 'dark'
   );
+  const [pdfOptions, setPdfOptions] = useState<{ pageSize: PageSize; margin: MarginSize }>({ pageSize: 'whole', margin: 'none' });
+  const [showPdfOptions, setShowPdfOptions] = useState(false);
+  const pdfDropdownRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
   const template = getTemplate(templateId);
@@ -76,6 +95,19 @@ function App() {
     try { localStorage.setItem(THEME_KEY, theme); } catch {}
   }, [theme]);
 
+  // Close PDF options dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (pdfDropdownRef.current && !pdfDropdownRef.current.contains(e.target as Node)) {
+        setShowPdfOptions(false);
+      }
+    };
+    if (showPdfOptions) {
+      document.addEventListener('mousedown', handler);
+    }
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showPdfOptions]);
+
   const toggleTheme = useCallback(() => {
     setTheme(t => t === 'dark' ? 'light' : 'dark');
   }, []);
@@ -95,10 +127,17 @@ function App() {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
+    const ps = PAGE_SIZES[pdfOptions.pageSize];
+    const marginMm = MARGINS[pdfOptions.margin];
     const previewHtml = previewRef.current.innerHTML;
     const tpl = getTemplate(templateId);
     const title = `${resumeData.header.name || 'Resume'} Resume - ${tpl.name}`;
     printWindow.document.title = title;
+
+    // Adjust card max-width in preview HTML to match page width
+    const adjustedHtml = ps.width !== 210
+      ? previewHtml.replace(/max-width:\s*210mm/gi, `max-width: ${ps.width}mm`)
+      : previewHtml;
 
     printWindow.document.write(`<!DOCTYPE html>
 <html>
@@ -110,14 +149,15 @@ function App() {
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   @page {
-    size: 210mm 9999mm;
+    size: ${ps.width}mm 9999mm;
     margin: 0;
   }
 
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    width: 210mm;
+    width: ${ps.width}mm;
+    padding: ${marginMm}mm;
   }
 
   body > div {
@@ -154,23 +194,31 @@ function App() {
   }
 </style>
 </head>
-<body>${previewHtml}</body>
+<body>${adjustedHtml}</body>
 </html>`);
     printWindow.document.close();
 
     const triggerPrint = () => {
-      // Measure content height for single-page continuous PDF
-      const body = printWindow.document.body;
-      const docEl = printWindow.document.documentElement;
-      const contentHeight = Math.max(
-        body.scrollHeight, body.offsetHeight,
-        docEl.scrollHeight, docEl.offsetHeight
-      );
-      const heightMm = Math.ceil(contentHeight * 25.4 / 96) + 5; // px to mm, +5 safety margin
-      const pageStyle = printWindow.document.createElement('style');
-      pageStyle.textContent = `@page { size: 210mm ${heightMm}mm; margin: 0; }`;
-      printWindow.document.head.appendChild(pageStyle);
-      printWindow.print();
+      if (ps.height) {
+        // Fixed page size (A4/Letter) — browser handles pagination
+        const pageStyle = printWindow.document.createElement('style');
+        pageStyle.textContent = `@page { size: ${ps.width}mm ${ps.height}mm; margin: 0; }`;
+        printWindow.document.head.appendChild(pageStyle);
+        printWindow.print();
+      } else {
+        // "As a whole" — measure content for a single continuous page
+        const body = printWindow.document.body;
+        const docEl = printWindow.document.documentElement;
+        const contentHeight = Math.max(
+          body.scrollHeight, body.offsetHeight,
+          docEl.scrollHeight, docEl.offsetHeight
+        );
+        const heightMm = Math.ceil(contentHeight * 25.4 / 96) + 5;
+        const pageStyle = printWindow.document.createElement('style');
+        pageStyle.textContent = `@page { size: ${ps.width}mm ${heightMm}mm; margin: 0; }`;
+        printWindow.document.head.appendChild(pageStyle);
+        printWindow.print();
+      }
     };
 
     if (printWindow.document.fonts) {
@@ -178,7 +226,7 @@ function App() {
     } else {
       printWindow.onload = () => setTimeout(triggerPrint, 500);
     }
-  }, [resumeData, templateId]);
+  }, [resumeData, templateId, pdfOptions]);
 
   const handleExportHtml = useCallback(() => {
     if (!previewRef.current) return;
@@ -316,19 +364,98 @@ function App() {
           >
             {t('exportHtml', locale)}
           </button>
-          <button
-            onClick={handleExportPdf}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              padding: '6px 14px', borderRadius: '6px', border: 'none',
-              background: '#fafafa', color: '#18181b',
-              fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-              fontFamily: '"JetBrains Mono", monospace',
-              transition: 'all 0.15s',
-            }}
-          >
-            {t('exportPdf', locale)}
-          </button>
+          <div ref={pdfDropdownRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setShowPdfOptions(v => !v)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                padding: '6px 10px', borderRadius: '6px', border: 'none',
+                background: '#fafafa', color: '#18181b',
+                fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                fontFamily: '"JetBrains Mono", monospace',
+                transition: 'all 0.15s',
+              }}
+            >
+              {t('exportPdf', locale)}
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ transform: showPdfOptions ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                <path d="M2 4l3 3 3-3" />
+              </svg>
+            </button>
+
+            {showPdfOptions && (
+              <div style={{
+                position: 'absolute', top: '100%', right: 0, marginTop: '4px',
+                width: '260px', padding: '12px', borderRadius: '8px',
+                background: '#18181b', border: '1px solid #3f3f46',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                zIndex: 1000, display: 'flex', flexDirection: 'column', gap: '10px',
+              }}>
+                {/* Page Size */}
+                <div>
+                  <div style={{ fontSize: '10px', fontWeight: 600, color: '#a1a1aa', fontFamily: '"JetBrains Mono", monospace', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {t('pdfPageSize', locale)}
+                  </div>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    {(['whole', 'a4', 'letter'] as PageSize[]).map(size => (
+                      <button
+                        key={size}
+                        onClick={() => setPdfOptions(o => ({ ...o, pageSize: size }))}
+                        style={{
+                          flex: 1, padding: '4px 0', borderRadius: '4px', border: 'none',
+                          fontSize: '11px', fontWeight: 500, cursor: 'pointer',
+                          fontFamily: '"JetBrains Mono", monospace',
+                          background: pdfOptions.pageSize === size ? '#fafafa' : '#27272a',
+                          color: pdfOptions.pageSize === size ? '#18181b' : '#a1a1aa',
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        {t('pdf' + size.charAt(0).toUpperCase() + size.slice(1), locale)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Margin */}
+                <div>
+                  <div style={{ fontSize: '10px', fontWeight: 600, color: '#a1a1aa', fontFamily: '"JetBrains Mono", monospace', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {t('pdfMargin', locale)}
+                  </div>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    {(['none', 'small', 'medium', 'large'] as MarginSize[]).map(m => (
+                      <button
+                        key={m}
+                        onClick={() => setPdfOptions(o => ({ ...o, margin: m }))}
+                        style={{
+                          flex: 1, padding: '4px 0', borderRadius: '4px', border: 'none',
+                          fontSize: '11px', fontWeight: 500, cursor: 'pointer',
+                          fontFamily: '"JetBrains Mono", monospace',
+                          background: pdfOptions.margin === m ? '#fafafa' : '#27272a',
+                          color: pdfOptions.margin === m ? '#18181b' : '#a1a1aa',
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        {t('pdfMargin' + m.charAt(0).toUpperCase() + m.slice(1), locale)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Download button */}
+                <button
+                  onClick={() => { setShowPdfOptions(false); handleExportPdf(); }}
+                  style={{
+                    width: '100%', padding: '7px 0', borderRadius: '6px', border: 'none',
+                    background: '#fafafa', color: '#18181b',
+                    fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                    fontFamily: '"JetBrains Mono", monospace',
+                    marginTop: '2px',
+                  }}
+                >
+                  {t('pdfDownload', locale)}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

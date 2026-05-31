@@ -1,12 +1,16 @@
+export type ContactType = 'phone' | 'email' | 'github' | 'website' | 'linkedin';
+
+export interface ContactItem {
+  type: ContactType;
+  value: string;
+}
+
 export interface ResumeData {
   header: {
     name: string;
     title: string;
-    phone?: string;
-    email?: string;
-    github?: string;
-    website?: string;
     status?: string;
+    contacts?: ContactItem[];
   };
   summary?: string;
   projects?: ProjectItem[];

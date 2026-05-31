@@ -38,6 +38,15 @@ const icons = {
   globe: `<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>`,
   phone: `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>`,
   mail: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
+  linkedin: `<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><path d="M2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>`,
+};
+
+const contactCfg: Record<string, { icon: string; href: (v: string) => string }> = {
+  phone: { icon: icons.phone, href: (v) => `tel:${v.replace(/[-\s]/g, "")}` },
+  email: { icon: icons.mail, href: (v) => `mailto:${v}` },
+  github: { icon: icons.github, href: (v) => `https://${v}` },
+  website: { icon: icons.globe, href: (v) => (v.startsWith("http") ? v : `https://${v}`) },
+  linkedin: { icon: icons.linkedin, href: (v) => `https://${v}` },
 };
 
 export default function ClaudePreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
@@ -67,10 +76,11 @@ export default function ClaudePreview({ data, locale = 'en', theme = 'dark' }: {
             <div className="cl-resume-name">{d.header.name}</div>
             <div className="cl-resume-title">{d.header.title}</div>
             <div className="cl-contact-row">
-              {d.header.github && <ContactChip icon={icons.github} text={d.header.github} href={`https://${d.header.github}`} />}
-              {d.header.website && <ContactChip icon={icons.globe} text={d.header.website} href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} />}
-              {d.header.phone && <ContactChip icon={icons.phone} text={d.header.phone} href={`tel:${d.header.phone.replace(/[-\s]/g, "")}`} />}
-              {d.header.email && <ContactChip icon={icons.mail} text={d.header.email} href={`mailto:${d.header.email}`} />}
+              {d.header.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                return <ContactChip key={i} icon={cfg.icon} text={contact.value} href={cfg.href(contact.value)} />;
+              })}
             </div>
           </div>
         </div>

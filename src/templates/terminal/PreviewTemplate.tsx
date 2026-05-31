@@ -22,6 +22,14 @@ function SectionHeader({ title }: { title: string }) {
   return <div className="tm-section-header">[ {title} ]</div>;
 }
 
+const contactCfg: Record<string, { render: (v: string) => React.ReactNode }> = {
+  phone: { render: (v) => <span className="tm-hl">"{v}"</span> },
+  email: { render: (v) => <a className="tm-link" href={`mailto:${v}`}>{v}</a> },
+  github: { render: (v) => <a className="tm-link" href={`https://${v}`} target="_blank" rel="noopener noreferrer">{v}</a> },
+  website: { render: (v) => <a className="tm-link" href={v.startsWith("http") ? v : `https://${v}`} target="_blank" rel="noopener noreferrer">{v}</a> },
+  linkedin: { render: (v) => <a className="tm-link" href={`https://${v}`} target="_blank" rel="noopener noreferrer">{v}</a> },
+};
+
 export default function TerminalPreview({ data, locale = 'en', theme = 'dark' }: { data: ResumeData; locale?: Locale; theme?: 'light' | 'dark' }) {
   const d = data;
   return (
@@ -52,18 +60,13 @@ export default function TerminalPreview({ data, locale = 'en', theme = 'dark' }:
             <div className="tm-line"><span className="tm-dim">{"{"}</span></div>
             <div className="tm-line">  <span className="tm-cyan">"name"</span><span className="tm-dim">:</span>    <span className="tm-bright">"{d.header.name}"</span><span className="tm-dim">,</span></div>
             <div className="tm-line">  <span className="tm-cyan">"title"</span><span className="tm-dim">:</span>   <span className="tm-accent">"{d.header.title}"</span><span className="tm-dim">,</span></div>
-            {d.header.github && (
-              <div className="tm-line">  <span className="tm-cyan">"github"</span><span className="tm-dim">:</span>  <a className="tm-link" href={`https://${d.header.github}`} target="_blank" rel="noopener noreferrer">{d.header.github}</a><span className="tm-dim">,</span></div>
-            )}
-            {d.header.website && (
-              <div className="tm-line">  <span className="tm-cyan">"website"</span><span className="tm-dim">:</span> <a className="tm-link" href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} target="_blank" rel="noopener noreferrer">{d.header.website}</a><span className="tm-dim">,</span></div>
-            )}
-            {d.header.phone && (
-              <div className="tm-line">  <span className="tm-cyan">"phone"</span><span className="tm-dim">:</span>   <span className="tm-hl">"{d.header.phone}"</span><span className="tm-dim">,</span></div>
-            )}
-            {d.header.email && (
-              <div className="tm-line">  <span className="tm-cyan">"email"</span><span className="tm-dim">:</span>   <a className="tm-link" href={`mailto:${d.header.email}`}>{d.header.email}</a></div>
-            )}
+            {d.header.contacts?.map((contact, i) => {
+              const cfg = contactCfg[contact.type];
+              if (!cfg) return null;
+              return (
+                <div key={i} className="tm-line">  <span className="tm-cyan">"{contact.type}"</span><span className="tm-dim">:</span> {cfg.render(contact.value)}</div>
+              );
+            })}
             <div className="tm-line"><span className="tm-dim">{"}"}</span></div>
           </div>
 

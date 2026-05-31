@@ -144,6 +144,16 @@ function MailIcon() {
   );
 }
 
+function LinkedInIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <path d="M2 9h4v12H2z" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  );
+}
+
 function UserIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -262,6 +272,13 @@ export default function ShadcnRetroPreview({ data, locale = 'en', theme = 'dark'
   const [hoveredExp, setHoveredExp] = useState<number | null>(null);
   const c = theme === 'dark' ? DARK : LIGHT;
   const isDark = theme === 'dark';
+  const contactCfg: Record<string, { icon: React.ReactNode; href?: (v: string) => string }> = {
+    phone: { icon: <PhoneIcon /> },
+    email: { icon: <MailIcon />, href: (v) => `mailto:${v}` },
+    github: { icon: <GithubIcon />, href: (v) => `https://${v}` },
+    website: { icon: <GlobeIcon />, href: (v) => (v.startsWith("http") ? v : `https://${v}`) },
+    linkedin: { icon: <LinkedInIcon />, href: (v) => `https://${v}` },
+  };
 
   return (
     <div style={{
@@ -410,10 +427,11 @@ export default function ShadcnRetroPreview({ data, locale = 'en', theme = 'dark'
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "20px" }}>
-              {d.header.github && <RetroContactChip icon={<GithubIcon />} text={d.header.github} href={`https://${d.header.github}`} c={c} />}
-              {d.header.website && <RetroContactChip icon={<GlobeIcon />} text={d.header.website} href={d.header.website.startsWith("http") ? d.header.website : `https://${d.header.website}`} c={c} />}
-              {d.header.phone && <RetroContactChip icon={<PhoneIcon />} text={d.header.phone} c={c} />}
-              {d.header.email && <RetroContactChip icon={<MailIcon />} text={d.header.email} href={`mailto:${d.header.email}`} c={c} />}
+              {d.header.contacts?.map((contact, i) => {
+                const cfg = contactCfg[contact.type];
+                if (!cfg) return null;
+                return <RetroContactChip key={i} icon={cfg.icon} text={contact.value} href={cfg.href ? cfg.href(contact.value) : undefined} c={c} />;
+              })}
             </div>
           </div>
         </div>

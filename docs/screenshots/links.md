@@ -1,1 +1,0 @@
-https://styled-resume.pages.dev/

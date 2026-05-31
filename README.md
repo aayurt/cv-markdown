@@ -3,7 +3,7 @@
 [![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)](https://www.typescriptlang.org)
 
-Write in Markdown. Get a beautifully designed resume.
+Write in Markdown. Get a beautifully designed resume. Supports **light & dark themes**.
 
 **Live demo → [styled-resume.vercel.app](https://styled-resume.vercel.app/)**
 
@@ -11,20 +11,23 @@ Write in Markdown. Get a beautifully designed resume.
 
 ![cv-markdown overview](docs/screenshots/overview.png)
 
-| Shadcn | Retro | Awesome | Plain | Claude | Terminal | Editorial |
-|--------|-------|---------|-------|--------|----------|-----------|
-| ![Shadcn](docs/screenshots/Shadcn.png) | ![Retro](docs/screenshots/Retro.png) | ![Awesome](docs/screenshots/Awesome.png) | ![Plain](docs/screenshots/Plain.png) | ![Claude](docs/screenshots/Claude.png) | ![Terminal](docs/screenshots/Terminal.png) | ![Editorial](docs/screenshots/Editorial.png) |
-| Clean & minimal | CRT amber terminal | Curated showcase | Print-friendly PDF | Warm & professional | Retro hacker | Newspaper editorial |
+#### Theme toggle — every template adapts to light and dark
+
+| Theme | Shadcn | Retro | Awesome | Plain | Claude | Terminal | Editorial |
+|-------|--------|-------|---------|-------|--------|----------|-----------|
+| **Light** | ![Shadcn light](docs/screenshots/Shadcn-light.png) | ![Retro light](docs/screenshots/Retro-light.png) | ![Awesome light](docs/screenshots/Awesome-light.png) | ![Plain light](docs/screenshots/Plain-light.png) | ![Claude light](docs/screenshots/Claude-light.png) | ![Terminal light](docs/screenshots/Terminal-light.png) | ![Editorial light](docs/screenshots/Editorial-light.png) |
+| **Dark** | ![Shadcn dark](docs/screenshots/Shadcn-dark.png) | ![Retro dark](docs/screenshots/Retro-dark.png) | ![Awesome dark](docs/screenshots/Awesome-dark.png) | ![Plain dark](docs/screenshots/Plain-dark.png) | ![Claude dark](docs/screenshots/Claude-dark.png) | ![Terminal dark](docs/screenshots/Terminal-dark.png) | ![Editorial dark](docs/screenshots/Editorial-dark.png) |
 
 ### What is this?
 
 Most markdown resume tools produce the same plain output. cv-markdown is different — it turns your markdown into resumes that actually look designed.
 
-One markdown file, seven distinct visual styles. Switch templates instantly, export as PDF or HTML, or share a link that renders your resume in the browser.
+One markdown file, seven distinct visual styles, each with light and dark themes. Switch templates instantly, toggle between themes, export as PDF or HTML, or share a link that renders your resume in the browser.
 
 ### Features
 
 - **7 Designed Templates** — Shadcn (clean), Retro (CRT terminal), Awesome (curated showcase), Plain (print-friendly), Claude (warm), Terminal (retro hacker), Editorial (newspaper bento grid)
+- **Light & Dark Themes** — Every template adapts to light and dark mode. Toggle instantly in the toolbar.
 - **Live Preview** — Edit markdown on the left, see the result on the right, instantly
 - **PDF Export** — Single-page continuous PDF via browser print, no server needed
 - **HTML Export** — Download a self-contained HTML file, deploy anywhere
@@ -49,9 +52,10 @@ Open `http://localhost:5174` and start editing.
 Markdown  →  Parser  →  Template  →  PDF / HTML / Share Link
                            ↑
                      7 visual styles
+                    × 2 themes (light/dark)
 ```
 
-Write your resume in markdown following a simple structure (name, title, experience, projects, skills, etc.). The parser converts it to structured data, and the template engine renders it with the style you choose.
+Write your resume in markdown following a simple structure (name, title, experience, projects, skills, etc.). The parser converts it to structured data, and the template engine renders it with the style and theme you choose.
 
 ### Markdown Structure
 

@@ -259,28 +259,36 @@ export default function PlainPreview({ data, locale = 'en', theme = 'dark' }: { 
         <div style={{ marginBottom: "14px" }}>
           <SectionLine title={t('education', locale)} c={c} />
           {d.education.map((edu, i) => (
-            <div key={i} style={{
-              display: "flex", justifyContent: "space-between",
-              alignItems: "baseline", flexWrap: "wrap",
-              marginBottom: "4px",
-            }}>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "baseline" }}>
+            <div key={i} style={{ marginBottom: "8px" }}>
+              <div style={{
+                display: "flex", justifyContent: "space-between",
+                alignItems: "baseline", gap: "8px",
+              }}>
+                <div style={{ display: "flex", gap: "6px", alignItems: "baseline" }}>
+                  <span style={{
+                    fontSize: "12px", fontWeight: 700, color: c.headingText,
+                    fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                  }}>
+                    {edu.school}
+                  </span>
+                  <span style={{ fontSize: "11px", color: c.dimText, fontStyle: "italic" }}>
+                    {edu.degree}
+                  </span>
+                </div>
                 <span style={{
-                  fontSize: "12px", fontWeight: 700, color: c.headingText,
-                  fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                  fontSize: "10.5px", color: c.veryDimText,
+                  fontFamily: '"Times New Roman", Times, Georgia, serif', whiteSpace: "nowrap",
                 }}>
-                  {edu.school}
-                </span>
-                <span style={{ fontSize: "11px", color: c.dimText, fontStyle: "italic" }}>
-                  {edu.degree}{edu.major ? `, ${edu.major}` : ''}
+                  {edu.period}
                 </span>
               </div>
-              <span style={{
-                fontSize: "10.5px", color: c.veryDimText,
-                fontFamily: '"Times New Roman", Times, Georgia, serif',
-              }}>
-                {edu.period}
-              </span>
+              {edu.major && (
+                <div style={{ marginTop: "2px" }}>
+                  <span style={{ fontSize: "11px", color: c.veryDimText }}>
+                    {edu.major}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>

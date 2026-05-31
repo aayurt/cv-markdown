@@ -469,20 +469,30 @@ export default function ShadcnPreview({ data, locale = 'en', theme = 'dark' }: {
               <div style={{ paddingLeft: "36px", display: "flex", flexDirection: "column", gap: "10px" }}>
                 {d.education.map((edu, i) => (
                   <div key={i} style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    flexWrap: "wrap", gap: "8px", padding: "12px 16px",
+                    padding: "12px 16px",
                     borderRadius: "8px", border: `1px solid ${c.eduBorder}`, background: c.eduBg,
                   }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                      <h3 style={{ fontSize: "14.5px", fontWeight: 600, color: c.eduSchool }}>{edu.school}</h3>
-                      <span style={{ fontSize: "11px", fontWeight: 600, color: c.eduDegreeText, background: c.eduDegreeBg, padding: "1px 8px", borderRadius: "4px" }}>
-                        {edu.degree}
+                    <div style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px",
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <h3 style={{ fontSize: "14.5px", fontWeight: 600, color: c.eduSchool }}>{edu.school}</h3>
+                        <span style={{
+                          fontSize: "11px", fontWeight: 600, color: c.eduDegreeText,
+                          background: c.eduDegreeBg, padding: "1px 8px", borderRadius: "4px", whiteSpace: "nowrap",
+                        }}>
+                          {edu.degree}
+                        </span>
+                      </div>
+                      <span style={{
+                        fontSize: "12px", color: c.dimText, fontFamily: '"JetBrains Mono", monospace', whiteSpace: "nowrap",
+                      }}>
+                        {edu.period}
                       </span>
+                    </div>
+                    <div style={{ marginTop: "6px" }}>
                       <span style={{ fontSize: "13px", color: c.mutedText }}>{edu.major}</span>
                     </div>
-                    <span style={{ fontSize: "12px", color: c.dimText, fontFamily: '"JetBrains Mono", monospace' }}>
-                      {edu.period}
-                    </span>
                   </div>
                 ))}
               </div>

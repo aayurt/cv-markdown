@@ -582,40 +582,49 @@ export default function ShadcnRetroPreview({ data, locale = 'en', theme = 'dark'
               <div style={{ paddingLeft: "38px", display: "flex", flexDirection: "column", gap: "8px" }}>
                 {d.education.map((edu, i) => (
                   <div key={i} style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    flexWrap: "wrap", gap: "8px", padding: "10px 14px",
+                    padding: "10px 14px",
                     border: `1px solid ${c.borderDim}`,
                     background: c.chipBg,
                     transition: "border-color 0.3s, background 0.3s",
                   }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                      <h3 style={{
-                        fontSize: "13px", fontWeight: 500, color: c.headerText,
-                        fontFamily: '"VT323", monospace',
+                    <div style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px",
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <h3 style={{
+                          fontSize: "13px", fontWeight: 500, color: c.headerText,
+                          fontFamily: '"VT323", monospace',
+                          transition: "color 0.3s",
+                        }}>
+                          {'>'} {edu.school}
+                        </h3>
+                        <span style={{
+                          fontSize: "10px", letterSpacing: "0.08em",
+                          color: c.eduBadgeColor, background: c.eduBadgeBg,
+                          padding: "1px 7px", fontWeight: 500,
+                          fontFamily: '"JetBrains Mono", monospace',
+                          transition: "background 0.3s, color 0.3s", whiteSpace: "nowrap",
+                        }}>
+                          {edu.degree}
+                        </span>
+                      </div>
+                      <span style={{
+                        fontSize: "11px", color: c.veryDim,
+                        fontFamily: '"JetBrains Mono", monospace',
                         transition: "color 0.3s",
                       }}>
-                        {'>'} {edu.school}
-                      </h3>
-                      <span style={{
-                        fontSize: "10px", letterSpacing: "0.08em",
-                        color: c.eduBadgeColor, background: c.eduBadgeBg,
-                        padding: "1px 7px", fontWeight: 500,
-                        fontFamily: '"JetBrains Mono", monospace',
-                        transition: "background 0.3s, color 0.3s",
-                      }}>
-                        {edu.degree}
+                        {edu.period}
                       </span>
-                      <span style={{ fontSize: "12px", color: c.dim, fontFamily: '"JetBrains Mono", monospace', transition: "color 0.3s" }}>
+                    </div>
+                    <div style={{ marginTop: "4px" }}>
+                      <span style={{
+                        fontSize: "12px", color: c.dim,
+                        fontFamily: '"JetBrains Mono", monospace',
+                        transition: "color 0.3s",
+                      }}>
                         {edu.major}
                       </span>
                     </div>
-                    <span style={{
-                      fontSize: "11px", color: c.veryDim,
-                      fontFamily: '"JetBrains Mono", monospace',
-                      transition: "color 0.3s",
-                    }}>
-                      {edu.period}
-                    </span>
                   </div>
                 ))}
               </div>

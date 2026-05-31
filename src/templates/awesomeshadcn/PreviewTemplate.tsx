@@ -748,7 +748,7 @@ export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dar
                       boxShadow: c.cardShadow,
                       animationDelay: `${0.28 + i * 0.04}s`,
                     }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
                         <div style={{
                           display: "flex", alignItems: "center", justifyContent: "center",
                           width: "28px", height: "28px", borderRadius: "6px",
@@ -762,23 +762,27 @@ export default function AwesomeShadcnPreview({ data, locale = 'en', theme = 'dar
                           {edu.school}
                         </h3>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginLeft: "38px" }}>
-                        <span style={{
-                          fontSize: "11px", fontWeight: 500,
-                          padding: "1px 7px", borderRadius: "4px",
-                          background: c.eduDegreeBg, color: c.eduDegreeText,
-                        }}>
-                          {edu.degree}
-                        </span>
-                        <span style={{ fontSize: "12.5px", color: c.eduMajor }}>
-                          {edu.major}
-                        </span>
-                        <span style={{
-                          fontSize: "11px", color: c.veryDimText,
-                          fontFamily: '"JetBrains Mono", monospace',
-                        }}>
-                          {edu.period}
-                        </span>
+                      <div style={{ marginLeft: "38px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{
+                            fontSize: "11px", fontWeight: 500,
+                            padding: "1px 7px", borderRadius: "4px",
+                            background: c.eduDegreeBg, color: c.eduDegreeText, whiteSpace: "nowrap",
+                          }}>
+                            {edu.degree}
+                          </span>
+                          <span style={{
+                            fontSize: "11px", color: c.veryDimText,
+                            fontFamily: '"JetBrains Mono", monospace', whiteSpace: "nowrap",
+                          }}>
+                            {edu.period}
+                          </span>
+                        </div>
+                        <div style={{ marginTop: "3px" }}>
+                          <span style={{ fontSize: "12.5px", color: c.eduMajor }}>
+                            {edu.major}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   ))}

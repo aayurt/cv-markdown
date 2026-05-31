@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume — Claude Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #F5F0E8;
+            --bg-secondary: #EDE7DB;
+            --bg-card: #FFFFFF;
+            --bg-code: #F9F5ED;
+            --text-primary: #1A1612;
+            --text-secondary: #6B5E4F;
+            --text-tertiary: #9A8C7B;
+            --accent: #D97706;
+            --accent-light: #FEF3C7;
+            --accent-hover: #B45309;
+            --border: #DDD5C8;
+            --border-light: #EDE7DB;
+            --link: #D97706;
+            --tag-bg: #F5F0E8;
+            --tag-border: #DDD5C8;
+            --shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.04);
+            --shadow-md: 0 4px 12px rgba(26, 22, 18, 0.06);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font-display: 'Libre Baskerville', Georgia, serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Claude Conversation Container ===== */
+        .claude-container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* ===== Top Bar — mimics Claude UI ===== */
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeIn 0.6s ease;
+        }
+
+        .topbar-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #F59E0B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .topbar-logo svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .topbar-text {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--text-tertiary);
+            letter-spacing: 0.02em;
+        }
+
+        .topbar-text strong {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== Message Blocks ===== */
+        .message-block {
+            margin-bottom: 36px;
+            animation: slideUp 0.5s ease both;
+        }
+
+        .message-block:nth-child(2) { animation-delay: 0.08s; }
+        .message-block:nth-child(3) { animation-delay: 0.16s; }
+        .message-block:nth-child(4) { animation-delay: 0.24s; }
+        .message-block:nth-child(5) { animation-delay: 0.32s; }
+        .message-block:nth-child(6) { animation-delay: 0.40s; }
+        .message-block:nth-child(7) { animation-delay: 0.48s; }
+        .message-block:nth-child(8) { animation-delay: 0.56s; }
+        .message-block:nth-child(9) { animation-delay: 0.64s; }
+
+        /* User message style */
+        .msg-user {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 32px;
+        }
+
+        .msg-user .bubble {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px 20px 4px 20px;
+            padding: 14px 20px;
+            max-width: 70%;
+            font-size: 14.5px;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Claude response style */
+        .msg-claude {
+            padding-left: 0;
+        }
+
+        .msg-claude .claude-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #F59E0B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .msg-claude .claude-avatar svg {
+            width: 15px;
+            height: 15px;
+            fill: white;
+        }
+
+        /* ===== HEADER SECTION ===== */
+        .resume-header {
+            margin-bottom: 8px;
+        }
+
+        .resume-name {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .resume-title {
+            font-size: 17px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 20px;
+            letter-spacing: 0.01em;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .contact-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-code);
+            border: 1px solid var(--border-light);
+            border-radius: 100px;
+            padding: 5px 14px;
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-family: var(--font-mono);
+            letter-spacing: -0.01em;
+        }
+
+        .contact-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .contact-chip svg {
+            width: 13px;
+            height: 13px;
+            opacity: 0.55;
+            flex-shrink: 0;
+        }
+
+        .contact-chip:hover svg {
+            opacity: 1;
+        }
+
+        /* ===== Section Label (like a user prompt) ===== */
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-light);
+        }
+
+        /* ===== Bio ===== */
+        .bio-text {
+            font-size: 15.5px;
+            line-height: 1.75;
+            color: var(--text-primary);
+            max-width: 640px;
+        }
+
+        .bio-text .highlight {
+            background: linear-gradient(120deg, var(--accent-light) 0%, transparent 100%);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* ===== Project Card ===== */
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .project-name {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .project-repo {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--link);
+            text-decoration: none;
+            background: var(--accent-light);
+            padding: 3px 10px;
+            border-radius: 100px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .project-repo:hover {
+            background: #FDE68A;
+        }
+
+        .project-summary {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-style: italic;
+            font-family: var(--font-display);
+        }
+
+        .project-bullets {
+            list-style: none;
+            padding: 0;
+        }
+
+        .project-bullets li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.65;
+        }
+
+        .project-bullets li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .tech-tag {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            color: var(--text-secondary);
+            padding: 3px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.02em;
+        }
+
+        /* ===== Work Experience ===== */
+        .work-item {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .work-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .work-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            background: var(--bg-primary);
+        }
+
+        .work-item::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 14px);
+            background: var(--border-light);
+        }
+
+        .work-item:last-child::after {
+            display: none;
+        }
+
+        .work-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+            margin-bottom: 2px;
+        }
+
+        .work-company {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .work-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            letter-spacing: 0.02em;
+        }
+
+        .work-role {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .work-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .work-bullets {
+            list-style: none;
+            padding: 0;
+        }
+
+        .work-bullets li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            font-size: 13.5px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .work-bullets li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--text-tertiary);
+            font-size: 12px;
+        }
+
+        /* Intern style (more subtle) */
+        .work-item.intern {
+            opacity: 0.8;
+        }
+
+        .work-item.intern .work-company {
+            font-size: 15px;
+        }
+
+        /* ===== Education ===== */
+        .edu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .edu-item:last-child {
+            border-bottom: none;
+        }
+
+        .edu-school {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .edu-detail {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        .edu-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            padding-top: 3px;
+        }
+
+        /* ===== Skills ===== */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 8px 18px;
+            font-size: 13.5px;
+            color: var(--text-primary);
+            font-weight: 400;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .skill-pill:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== Appendix ===== */
+        .appendix-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .appendix-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .appendix-img-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-code));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 13px;
+            font-family: var(--font-mono);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .appendix-body {
+            padding: 18px 22px;
+        }
+
+        .appendix-name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .appendix-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.03em;
+        }
+
+        .footer .dot {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+
+        /* ===== Cursor blink at end ===== */
+        .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background: var(--accent);
+            margin-left: 4px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ===== Print ===== */
+        @media print {
+            body {
+                background: white;
+                font-size: 12px;
+            }
+            .claude-container {
+                max-width: 100%;
+                padding: 20px;
+            }
+            .message-block {
+                animation: none !important;
+            }
+            .project-card:hover,
+            .skill-pill:hover {
+                transform: none;
+                box-shadow: var(--shadow-sm);
+            }
+            .topbar { display: none; }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            .resume-name { font-size: 32px; }
+            .contact-row { gap: 5px; }
+            .contact-chip { font-size: 11.5px; padding: 4px 10px; }
+            .project-header { flex-direction: column; gap: 6px; }
+            .work-top { flex-direction: column; }
+            .edu-item { flex-direction: column; gap: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="claude-container">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="topbar-text">
+            <strong>Claude</strong> · Resume · 由你的下一位产品经理生成
+        </div>
+    </div>
+
+    <!-- User Prompt -->
+    <div class="message-block msg-user">
+        <div class="bubble">介绍一下你自己吧 👋</div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="message-block msg-claude">
+        <div class="claude-avatar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="resume-header">
+            <div class="resume-name">张三</div>
+            <div class="resume-title">高级产品经理 · AI & SaaS 方向</div>
+            <div class="contact-row">
+                <a href="#" class="contact-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    github.com/zhangsan
+                </a>
+                <a href="#" class="contact-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    zhangsan.dev
+                </a>
+                <a href="tel:+8613800138000" class="contact-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    138-0013-8000
+                </a>
+                <a href="mailto:zhangsan@email.com" class="contact-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    zhangsan@email.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIO -->
+    <div class="message-block msg-claude">
+        <div class="section-label">个人简介</div>
+        <p class="bio-text">
+            拥有 6 年产品经验的<span class="highlight">AI 产品经理</span>，专注于将大语言模型能力转化为用户可感知的产品价值。曾主导从 0 到 1 的 SaaS 产品构建，覆盖 B 端企业协作与 C 端智能助手场景。擅长跨职能协作、数据驱动决策与敏捷迭代，信奉 "好产品是改出来的，不是想出来的"。
+        </p>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="message-block msg-user">
+        <div class="bubble">有什么代表性项目吗？</div>
+    </div>
+
+    <div class="message-block msg-claude">
+        <div class="claude-avatar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-label">项目经历</div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-name">FlowMind — AI 工作流引擎</div>
+                <a href="#" class="project-repo">↗ github.com/zhangsan/flowmind</a>
+            </div>
+            <div class="project-summary">面向非技术用户的可视化 AI Agent 编排平台，让每个人都能搭建自己的 AI 助手</div>
+            <ul class="project-bullets">
+                <li>主导产品从概念到上线全流程，完成市场调研、竞品分析、PRD 编写与交互原型设计</li>
+                <li>设计了节点式编排画布与 Prompt 模版市场，降低用户创建 AI 工作流的门槛至 5 分钟内</li>
+                <li>上线 3 个月内获得 12K+ 注册用户，DAU 峰值突破 2,800，被 ProductHunt 评为 Product of the Day</li>
+                <li>建立用户反馈闭环机制，利用行为数据分析迭代核心功能，NPS 从 32 提升至 58</li>
+            </ul>
+            <div class="tech-stack">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">LangChain</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Redis</span>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-name">DocSync — 智能文档协作</div>
+                <a href="#" class="project-repo">↗ github.com/zhangsan/docsync</a>
+            </div>
+            <div class="project-summary">基于 CRDT 的实时协同编辑器，内嵌 AI 写作助手与知识库语义检索</div>
+            <ul class="project-bullets">
+                <li>规划并推动 AI 辅助写作功能落地，实现上下文感知的内容续写、润色与翻译</li>
+                <li>设计知识库关联机制，支持用户在编辑时实时引用企业内部文档，准确率达 91%</li>
+                <li>推动产品从个人工具向团队协作转型，企业客户数从 40 增长至 220+</li>
+            </ul>
+            <div class="tech-stack">
+                <span class="tech-tag">Vue 3</span>
+                <span class="tech-tag">Yjs / CRDT</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Elasticsearch</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORK EXPERIENCE -->
+    <div class="message-block msg-user">
+        <div class="bubble">工作经历呢？</div>
+    </div>
+
+    <div class="message-block msg-claude">
+        <div class="claude-avatar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-label">工作经历</div>
+
+        <div class="work-item">
+            <div class="work-top">
+                <span class="work-company">字节跳动</span>
+                <span class="work-date">2022.03 — 至今</span>
+            </div>
+            <div class="work-role">高级产品经理 · AI 平台部</div>
+            <div class="work-desc">负责企业级 AI 中台产品规划与落地，推动 LLM 能力在内部业务线的规模化应用。</div>
+            <ul class="work-bullets">
+                <li>主导 AI 中台产品路线图制定，对齐 5 条业务线需求，季度 OKR 完成率 115%</li>
+                <li>设计统一 Prompt 管理与评测体系，将模型迭代周期从 2 周缩短至 3 天</li>
+                <li>牵头跨部门 AI 产品工作坊，孵化 3 个创新项目并推动 1 个进入正式立项</li>
+                <li>建立产品数据看板，覆盖用户行为、模型调用、成本分析三大维度</li>
+            </ul>
+        </div>
+
+        <div class="work-item">
+            <div class="work-top">
+                <span class="work-company">阿里巴巴</span>
+                <span class="work-date">2019.07 — 2022.02</span>
+            </div>
+            <div class="work-role">产品经理 · 钉钉智能协作</div>
+            <div class="work-desc">负责钉钉文档与智能搜索模块的产品设计与迭代优化。</div>
+            <ul class="work-bullets">
+                <li>主导钉钉文档 2.0 改版，重新定义编辑器交互范式，上线后周活提升 37%</li>
+                <li>推动智能搜索功能接入语义理解模型，搜索结果点击率提升 24%</li>
+                <li>与 UED 团队协作完成设计系统升级，组件复用率提升至 85%</li>
+            </ul>
+        </div>
+
+        <div class="work-item intern">
+            <div class="work-top">
+                <span class="work-company">腾讯（实习）</span>
+                <span class="work-date">2018.06 — 2019.04</span>
+            </div>
+            <div class="work-role">产品实习生 · 微信事业群</div>
+        </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="message-block msg-claude">
+        <div class="section-label">教育经历</div>
+        <div class="edu-item">
+            <div>
+                <div class="edu-school">浙江大学</div>
+                <div class="edu-detail">硕士 · 计算机科学与技术</div>
+            </div>
+            <div class="edu-date">2017.09 — 2019.06</div>
+        </div>
+        <div class="edu-item">
+            <div>
+                <div class="edu-school">浙江大学</div>
+                <div class="edu-detail">学士 · 信息管理与信息系统</div>
+            </div>
+            <div class="edu-date">2013.09 — 2017.06</div>
+        </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="message-block msg-claude">
+        <div class="section-label">技能</div>
+        <div class="skills-grid">
+            <span class="skill-pill">产品规划 & 路线图</span>
+            <span class="skill-pill">数据分析（SQL / Mixpanel）</span>
+            <span class="skill-pill">原型设计（Figma）</span>
+            <span class="skill-pill">LLM / Prompt Engineering</span>
+            <span class="skill-pill">敏捷开发 & Scrum</span>
+        </div>
+    </div>
+
+    <!-- APPENDIX -->
+    <div class="message-block msg-user">
+        <div class="bubble">有没有想展示的附加材料？</div>
+    </div>
+
+    <div class="message-block msg-claude">
+        <div class="claude-avatar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-label">附录</div>
+
+        <div class="appendix-card">
+            <div class="appendix-img-placeholder">
+                📊 替换为你的产品架构图 / 截图 (建议 780×220)
+            </div>
+            <div class="appendix-body">
+                <div class="appendix-name">FlowMind 产品架构图</div>
+                <div class="appendix-desc">展示了从用户输入到 AI Agent 执行的完整数据流与模块交互关系。</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- End cursor -->
+    <div class="message-block msg-claude" style="animation-delay: 0.7s;">
+        <div style="display: flex; align-items: center; gap: 6px; color: var(--text-tertiary); font-size: 13px; font-family: var(--font-mono);">
+            感谢阅读<span class="cursor-blink"></span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        CRAFTED WITH CLAUDE STYLE
+        <span class="dot"></span>
+        2025
+    </div>
+
+</div>
+
+</body>
+</html>

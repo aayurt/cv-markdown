@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal Resume — CRT Matrix</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════
+     CSS VARIABLES — CRT / Matrix Theme
+     ═══════════════════════════════════════════════════════ */
+  :root {
+    --bg:              #020a02;
+    --bg-card:         #041504;
+    --bg-glow:         #0a1f0a;
+    --border:          #0e380e;
+    --border-hover:    #1a6b1a;
+    --green-faint:     #0d2e0d;
+    --green-dim:       #1a5c1a;
+    --green:           #33ff33;
+    --green-mid:       #22cc22;
+    --green-soft:      #66ff66;
+    --green-muted:     #2d8a2d;
+    --green-comment:   #1e6b1e;
+    --amber:           #ccaa22;
+    --amber-dim:       #7a6a11;
+    --cyan:            #22ffcc;
+    --white:           #ccffcc;
+    --text:            #33ff33;
+    --text-dim:        #1e8a1e;
+    --text-faint:      #145014;
+    --font-mono:       'JetBrains Mono', 'Share Tech Mono', 'Courier New', monospace;
+    --glow-sm:         0 0 4px rgba(51, 255, 51, 0.3);
+    --glow-md:         0 0 8px rgba(51, 255, 51, 0.2), 0 0 20px rgba(51, 255, 51, 0.1);
+    --glow-lg:         0 0 15px rgba(51, 255, 51, 0.3), 0 0 40px rgba(51, 255, 51, 0.1);
+    --glow-text:       0 0 8px rgba(51, 255, 51, 0.6);
+    --page-max-width:  880px;
+    --page-pad-x:      32px;
+    --page-pad-y:      28px;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     RESET & BASE
+     ═══════════════════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { font-size: 13.5px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     CRT OVERLAY EFFECTS
+     ═══════════════════════════════════════════════════════ */
+
+  /* Scanlines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Phosphor vignette */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 50%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     WINDOW CHROME
+     ═══════════════════════════════════════════════════════ */
+  .crt-window {
+    max-width: var(--page-max-width);
+    margin: 2rem auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--glow-lg), 0 20px 60px rgba(0, 0, 0, 0.8);
+  }
+
+  .crt-titlebar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .crt-titlebar-dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .crt-titlebar-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .crt-titlebar-dot--close  { background: #ff5f56; }
+  .crt-titlebar-dot--mini   { background: #ffbd2e; }
+  .crt-titlebar-dot--expand { background: #27c93f; }
+
+  .crt-titlebar-text {
+    flex: 1;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     TERMINAL BODY
+     ═══════════════════════════════════════════════════════ */
+  .crt-body {
+    background: var(--bg);
+    padding: var(--page-pad-y) var(--page-pad-x);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     BOOT SEQUENCE
+     ═══════════════════════════════════════════════════════ */
+  .boot-line {
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+
+  .boot-line--ok {
+    color: var(--green-mid);
+  }
+
+  .boot-line--highlight {
+    color: var(--green);
+    text-shadow: var(--glow-text);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ASCII BANNER
+     ═══════════════════════════════════════════════════════ */
+  .ascii-banner {
+    color: var(--green);
+    font-size: 0.58rem;
+    line-height: 1.15;
+    white-space: pre;
+    text-shadow: var(--glow-text);
+    margin: 16px 0 4px 0;
+    overflow-x: auto;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PROMPT LINE
+     ═══════════════════════════════════════════════════════ */
+  .prompt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin-top: 20px;
+    margin-bottom: 4px;
+  }
+
+  .prompt-user     { color: var(--green); text-shadow: var(--glow-sm); }
+  .prompt-at       { color: var(--text-dim); }
+  .prompt-host     { color: var(--cyan); }
+  .prompt-sep      { color: var(--text-faint); }
+  .prompt-path     { color: var(--green-mid); }
+  .prompt-dollar   { color: var(--text-dim); margin-right: 8px; }
+  .prompt-cmd      { color: var(--amber); }
+  .prompt-arg      { color: var(--white); }
+  .prompt-flag     { color: var(--cyan); }
+
+  /* ═══════════════════════════════════════════════════════
+     OUTPUT AREA
+     ═══════════════════════════════════════════════════════ */
+  .output {
+    margin: 6px 0 0 0;
+    padding-left: 2px;
+  }
+
+  .output-line {
+    line-height: 1.75;
+    font-size: 0.92rem;
+  }
+
+  .output-line--json-key   { color: var(--cyan); }
+  .output-line--json-value { color: var(--green); }
+  .output-line--bracket    { color: var(--text-dim); }
+
+  /* ═══════════════════════════════════════════════════════
+     INLINE TEXT STYLES
+     ═══════════════════════════════════════════════════════ */
+  .t-comment   { color: var(--green-comment); font-style: italic; }
+  .t-highlight { color: var(--green); text-shadow: var(--glow-sm); }
+  .t-bright    { color: var(--white); font-weight: 600; text-shadow: var(--glow-sm); }
+  .t-accent    { color: var(--amber); }
+  .t-cyan      { color: var(--cyan); }
+  .t-dim       { color: var(--text-dim); }
+  .t-faint     { color: var(--text-faint); }
+
+  .t-link {
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--green-dim);
+    transition: all 0.2s;
+  }
+
+  .t-link:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+    text-shadow: var(--glow-sm);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION DIVIDER
+     ═══════════════════════════════════════════════════════ */
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 24px 0;
+  }
+
+  .section-header {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-shadow: var(--glow-text);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--green-dim), transparent 80%);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     CARD (Project / Experience / Education)
+     ═══════════════════════════════════════════════════════ */
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    background: var(--bg-card);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--glow-md);
+  }
+
+  .card--intern {
+    border-left: 3px solid var(--amber-dim);
+  }
+
+  .card-title {
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-shadow: var(--glow-sm);
+    margin-bottom: 4px;
+  }
+
+  .card-meta {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+
+  .card-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-desc {
+    color: var(--green-muted);
+    font-size: 0.84rem;
+    font-style: italic;
+    margin: 6px 0;
+  }
+
+  .card-bullets {
+    list-style: none;
+    margin: 8px 0;
+  }
+
+  .card-bullet {
+    position: relative;
+    padding-left: 22px;
+    font-size: 0.84rem;
+    line-height: 1.85;
+    color: var(--green-mid);
+  }
+
+  .card-bullet::before {
+    content: '>';
+    position: absolute;
+    left: 4px;
+    color: var(--green);
+    text-shadow: var(--glow-sm);
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     TECH TAGS
+     ═══════════════════════════════════════════════════════ */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tag {
+    background: var(--green-faint);
+    color: var(--green-mid);
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    border: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SKILL BARS
+     ═══════════════════════════════════════════════════════ */
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 7px 0;
+  }
+
+  .skill-label {
+    min-width: 160px;
+    color: var(--green-mid);
+    font-size: 0.84rem;
+  }
+
+  .skill-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--green-faint);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--green);
+    box-shadow: var(--glow-sm);
+  }
+
+  .skill-fill--90 { width: 90%; }
+  .skill-fill--85 { width: 85%; }
+  .skill-fill--82 { width: 82%; }
+  .skill-fill--80 { width: 80%; }
+  .skill-fill--75 { width: 75%; }
+
+  /* ═══════════════════════════════════════════════════════
+     APPENDIX IMAGE
+     ═══════════════════════════════════════════════════════ */
+  .appendix-img {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 420px;
+  }
+
+  .appendix-placeholder {
+    width: 100%;
+    height: 180px;
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faint);
+    font-size: 0.78rem;
+  }
+
+  .appendix-img img {
+    width: 100%;
+    display: block;
+    filter: saturate(0.6) brightness(0.85);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     BLINKING CURSOR
+     ═══════════════════════════════════════════════════════ */
+  .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 17px;
+    background: var(--green);
+    box-shadow: var(--glow-sm);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: cursor-blink 1s steps(1) infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     STATUS BAR
+     ═══════════════════════════════════════════════════════ */
+  .crt-statusbar {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+
+  .crt-statusbar-group {
+    display: flex;
+    gap: 16px;
+  }
+
+  .crt-statusbar-active {
+    color: var(--green);
+    text-shadow: var(--glow-sm);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PHOSPHOR FLICKER (subtle)
+     ═══════════════════════════════════════════════════════ */
+  @keyframes phosphor-flicker {
+    0%, 100% { opacity: 1; }
+    92%      { opacity: 1; }
+    93%      { opacity: 0.88; }
+    94%      { opacity: 1; }
+  }
+
+  .crt-body {
+    animation: phosphor-flicker 8s infinite;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════ */
+  @media (max-width: 680px) {
+    html { font-size: 12px; }
+    .crt-window { margin: 0.5rem; border-radius: 6px; }
+    .crt-body { padding: 16px 14px; }
+    .ascii-banner { font-size: 0.42rem; }
+    .card { padding: 12px 14px; }
+    .card-meta { flex-direction: column; gap: 4px; }
+    .skill-label { min-width: 120px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PRINT
+     ═══════════════════════════════════════════════════════ */
+  @media print {
+    html { font-size: 11px; }
+    body { background: #000; }
+    body::after, body::before { display: none; }
+    .crt-window {
+      box-shadow: none;
+      margin: 0;
+      max-width: 100%;
+      border: 2px solid #1a5c1a;
+      border-radius: 0;
+    }
+    .crt-titlebar { display: none; }
+    .crt-statusbar { display: none; }
+    .crt-body { animation: none; padding: 20px 24px; }
+    .card { break-inside: avoid; }
+    .card:hover { border-color: var(--border); box-shadow: none; }
+    .cursor { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-window" id="resume"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// RESUME DATA — 修改这里的数据即可
+// ═══════════════════════════════════════════════════════
+const RESUME = {
+  header: {
+    name: "张三",
+    title: "全栈工程师 / Full-Stack Developer",
+    github: { label: "github.com/zhangsan", url: "https://github.com/zhangsan" },
+    website: { label: "zhangsan.dev", url: "https://zhangsan.dev" },
+    phone: "+86 138-0000-0000",
+    email: "zhangsan@email.com"
+  },
+
+  about: "热爱开源的全栈工程师，拥有 4 年互联网产品开发经验。擅长使用 React / Node.js / Go 构建高性能 Web 应用。对分布式系统、DevOps 和开发者工具有浓厚兴趣。日常活跃于 GitHub，累计获得 1.2k+ stars。相信代码即表达，追求优雅与实用的平衡。",
+
+  projects: [
+    {
+      name: "DevFlow — 开发者工作流引擎",
+      repo: { label: "github.com/zhangsan/devflow", url: "https://github.com/zhangsan/devflow" },
+      summary: "一个面向中小团队的 CI/CD 可视化编排平台，简化 DevOps 复杂度",
+      bullets: [
+        "基于 DAG 图引擎实现可视化流水线编排，支持拖拽配置构建/测试/部署流程",
+        "集成 GitHub Webhooks，实现 PR 触发自动构建，平均构建时间缩短 40%",
+        "设计插件系统架构，支持社区贡献自定义 Step，已有 30+ 社区插件",
+        "使用 WebSocket 实现实时日志推送和构建状态同步"
+      ],
+      tags: ["React", "TypeScript", "Go", "Docker", "PostgreSQL", "Redis"]
+    },
+    {
+      name: "MicroTrace — 微服务链路追踪工具",
+      repo: { label: "github.com/zhangsan/microtrace", url: "https://github.com/zhangsan/microtrace" },
+      summary: "轻量级分布式链路追踪 SDK，兼容 OpenTelemetry 协议",
+      bullets: [
+        "实现无侵入式埋点方案，通过 Go Middleware 自动注入 trace context",
+        "开发可视化 Trace Viewer，支持火焰图 & 瀑布图两种分析视图",
+        "优化采样策略，在保证追踪覆盖率的前提下降低 85% 的存储开销"
+      ],
+      tags: ["Go", "gRPC", "ClickHouse", "React"]
+    }
+  ],
+
+  experience: [
+    {
+      company: "字节跳动",
+      department: "基础架构部",
+      role: "高级后端工程师",
+      time: "2022.06 — 至今",
+      summary: "负责内部 API 网关和服务治理平台的核心开发",
+      bullets: [
+        "主导 API 网关重构，将单体架构拆分为插件化微内核架构，QPS 提升 3x",
+        "设计并实现基于 Raft 的配置分发系统，保障集群配置秒级生效和一致性",
+        "推动落地全链路灰度发布方案，覆盖 200+ 微服务，线上事故率下降 60%",
+        "组织团队技术分享和 Code Review 机制，产出内部技术文档 50+ 篇"
+      ],
+      intern: false
+    },
+    {
+      company: "阿里巴巴",
+      department: "云原生团队",
+      role: "后端工程师",
+      time: "2020.07 — 2022.05",
+      summary: "参与 Serverless 平台和容器调度系统的研发",
+      bullets: [
+        "开发 FaaS 冷启动优化模块，通过预热池 + Snapshot 将冷启动 P99 降至 200ms",
+        "实现基于资源画像的智能调度算法，集群资源利用率提升 25%",
+        "参与开源项目贡献，向 Kubernetes 提交 5 个 PR 并被合并"
+      ],
+      intern: false
+    },
+    {
+      company: "腾讯",
+      department: "微信支付",
+      role: "后端开发实习生",
+      time: "2020.01 — 2020.06",
+      summary: null,
+      bullets: [],
+      intern: true
+    }
+  ],
+
+  education: [
+    {
+      school: "浙江大学",
+      degree: "硕士",
+      major: "计算机科学与技术",
+      time: "2018.09 — 2020.06"
+    },
+    {
+      school: "华中科技大学",
+      degree: "学士",
+      major: "软件工程",
+      time: "2014.09 — 2018.06"
+    }
+  ],
+
+  skills: [
+    { name: "Go / Rust",            level: 90 },
+    { name: "TypeScript / React",   level: 85 },
+    { name: "Kubernetes / Docker",  level: 82 },
+    { name: "PostgreSQL / Redis",   level: 80 },
+    { name: "系统设计 / 架构",       level: 75 }
+  ],
+
+  appendix: [
+    {
+      title: "附录 A：系统架构图 — DevFlow",
+      desc: "DevFlow 整体架构设计图，展示核心模块与数据流向",
+      image: null  // 替换为图片路径，如 "architecture.png"
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════════════════════
+function esc(str) {
+  const el = document.createElement('span');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
+function renderPrompt(path, cmd, args, flags) {
+  return `<div class="prompt">` +
+    `<span class="prompt-user">visitor</span>` +
+    `<span class="prompt-at">@</span>` +
+    `<span class="prompt-host">resume</span>` +
+    `<span class="prompt-sep">:</span>` +
+    `<span class="prompt-path">${esc(path)}</span>` +
+    `<span class="prompt-dollar">$</span>` +
+    `<span class="prompt-cmd">${esc(cmd)}</span>` +
+    (flags ? ` <span class="prompt-flag">${esc(flags)}</span>` : '') +
+    (args ? ` <span class="prompt-arg">${esc(args)}</span>` : '') +
+  `</div>`;
+}
+
+function renderTags(tags) {
+  if (!tags || !tags.length) return '';
+  return `<div class="tags">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+}
+
+function renderBullets(bullets) {
+  if (!bullets || !bullets.length) return '';
+  return `<ul class="card-bullets">${bullets.map(b => `<li class="card-bullet">${esc(b)}</li>`).join('')}</ul>`;
+}
+
+function levelClass(level) {
+  if (level >= 90) return 'skill-fill--90';
+  if (level >= 85) return 'skill-fill--85';
+  if (level >= 82) return 'skill-fill--82';
+  if (level >= 80) return 'skill-fill--80';
+  return 'skill-fill--75';
+}
+
+function render(data) {
+  const d = data;
+  let html = '';
+
+  // ── Titlebar ──
+  html += `
+    <div class="crt-titlebar">
+      <div class="crt-titlebar-dots">
+        <span class="crt-titlebar-dot crt-titlebar-dot--close"></span>
+        <span class="crt-titlebar-dot crt-titlebar-dot--mini"></span>
+        <span class="crt-titlebar-dot crt-titlebar-dot--expand"></span>
+      </div>
+      <div class="crt-titlebar-text">resume.sh — bash — 120×45</div>
+    </div>`;
+
+  // ── Body start ──
+  html += `<div class="crt-body">`;
+
+  // ── Boot sequence ──
+  html += `
+    <div class="boot-line">BIOS v3.3.1 ... <span class="boot-line--ok">[OK]</span></div>
+    <div class="boot-line">Loading kernel modules ... <span class="boot-line--ok">[OK]</span></div>
+    <div class="boot-line">Mounting /dev/career ... <span class="boot-line--ok">[OK]</span></div>
+    <div class="boot-line boot-line--highlight">System ready. Welcome to resume.sh</div>`;
+
+  // ── ASCII banner ──
+  html += `<pre class="ascii-banner">
+ ________  ___  ___  ________  ________   ________          ________  ________  ________
+|\\   __  \\|\\  \\|\\  \\|\\   __  \\|\\   ___  \\|\\   ____\\        |\\   ____\\|\\   __  \\|\\   ___  \\
+\\ \\  \\|\\  \\ \\  \\\\\\  \\ \\  \\|\\  \\ \\  \\\\ \\  \\ \\  \\___|        \\ \\  \\___|\\ \\  \\|\\  \\ \\  \\\\ \\  \\
+ \\ \\   _  _\\ \\   __  \\ \\   __  \\ \\  \\\\ \\  \\ \\  \\  ___       \\ \\_____  \\ \\   __  \\ \\  \\\\ \\  \\
+  \\ \\  \\\\  \\\\ \\  \\ \\  \\ \\  \\ \\  \\ \\  \\\\ \\  \\ \\  \\|\\  \\       \\|____|\\  \\ \\  \\ \\  \\ \\  \\\\ \\  \\
+   \\ \\__\\\\ _\\\\ \\__\\ \\__\\ \\__\\ \\__\\ \\__\\\\ \\__\\ \\_______\\        ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ \\__\\
+    \\|__|\\|__|\\|__|\\|__|\\|__|\\|__|\\|__| \\|__|\\|_______|       |\\_________\\|__|\\|__|\\|__| \\|__|
+                                                               \\|_________|</pre>`;
+
+  // ── Header ──
+  html += renderPrompt('~', 'cat', 'header.json', null);
+  html += `<div class="output">
+    <div class="output-line"><span class="t-dim">{</span></div>
+    <div class="output-line">  <span class="t-cyan">"name"</span><span class="t-dim">:</span>    <span class="t-bright">"${esc(d.header.name)}"</span><span class="t-dim">,</span></div>
+    <div class="output-line">  <span class="t-cyan">"title"</span><span class="t-dim">:</span>   <span class="t-accent">"${esc(d.header.title)}"</span><span class="t-dim">,</span></div>
+    <div class="output-line">  <span class="t-cyan">"github"</span><span class="t-dim">:</span>  <a class="t-link" href="${esc(d.header.github.url)}">${esc(d.header.github.label)}</a><span class="t-dim">,</span></div>
+    <div class="output-line">  <span class="t-cyan">"website"</span><span class="t-dim">:</span> <a class="t-link" href="${esc(d.header.website.url)}">${esc(d.header.website.label)}</a><span class="t-dim">,</span></div>
+    <div class="output-line">  <span class="t-cyan">"phone"</span><span class="t-dim">:</span>   <span class="t-highlight">"${esc(d.header.phone)}"</span><span class="t-dim">,</span></div>
+    <div class="output-line">  <span class="t-cyan">"email"</span><span class="t-dim">:</span>   <a class="t-link" href="mailto:${esc(d.header.email)}">${esc(d.header.email)}</a></div>
+    <div class="output-line"><span class="t-dim">}</span></div>
+  </div>`;
+
+  // ── About ──
+  html += `<hr class="divider">`;
+  html += renderPrompt('~', 'echo', '$ABOUT_ME', null);
+  html += `<div class="output">
+    <div class="output-line" style="max-width:72ch">${esc(d.about)}</div>
+  </div>`;
+
+  // ── Projects ──
+  html += `<hr class="divider">`;
+  html += renderPrompt('~/projects', 'ls', null, '-la');
+  html += `<div class="output">
+    <div class="section-header">[ 项目经历 ]</div>`;
+  d.projects.forEach(p => {
+    html += `
+      <div class="card">
+        <div class="card-title">${esc(p.name)}</div>
+        <div class="card-meta">
+          <span class="card-meta-item"><span class="t-dim">repo:</span> <a class="t-link" href="${esc(p.repo.url)}">${esc(p.repo.label)}</a></span>
+        </div>
+        <div class="card-desc">// ${esc(p.summary)}</div>
+        ${renderBullets(p.bullets)}
+        ${renderTags(p.tags)}
+      </div>`;
+  });
+  html += `</div>`;
+
+  // ── Experience ──
+  html += `<hr class="divider">`;
+  html += renderPrompt('~/experience', 'git', 'log', '--oneline');
+  html += `<div class="output">
+    <div class="section-header">[ 工作经历 ]</div>`;
+  d.experience.forEach(e => {
+    const cardClass = e.intern ? 'card card--intern' : 'card';
+    const titlePrefix = e.intern ? '[INTERN] ' : '';
+    html += `
+      <div class="${cardClass}">
+        <div class="card-title">${esc(titlePrefix + e.company)} <span class="t-dim">— ${esc(e.department)}</span></div>
+        <div class="card-meta">
+          <span class="card-meta-item"><span class="t-dim">role:</span> ${esc(e.role)}</span>
+          <span class="card-meta-item"><span class="t-dim">date:</span> ${esc(e.time)}</span>
+        </div>
+        ${e.summary ? `<div class="card-desc">// ${esc(e.summary)}</div>` : ''}
+        ${renderBullets(e.bullets)}
+      </div>`;
+  });
+  html += `</div>`;
+
+  // ── Education ──
+  html += `<hr class="divider">`;
+  html += renderPrompt('~/education', 'cat', 'degree.txt', null);
+  html += `<div class="output">
+    <div class="section-header">[ 教育经历 ]</div>`;
+  d.education.forEach(e => {
+    html += `
+      <div class="card">
+        <div class="card-title">${esc(e.school)}</div>
+        <div class="card-meta">
+          <span class="card-meta-item"><span class="t-dim">degree:</span> ${esc(e.degree)} — ${esc(e.major)}</span>
+          <span class="card-meta-item"><span class="t-dim">date:</span> ${esc(e.time)}</span>
+        </div>
+      </div>`;
+  });
+  html += `</div>`;
+
+  // ── Skills ──
+  if (d.skills && d.skills.length) {
+    html += `<hr class="divider">`;
+    html += renderPrompt('~', 'neofetch', null, '--skills');
+    html += `<div class="output">
+      <div class="section-header">[ 技术栈 ]</div>`;
+    d.skills.forEach(s => {
+      html += `
+        <div class="skill-row">
+          <span class="skill-label">${esc(s.name)}</span>
+          <div class="skill-bar"><div class="skill-fill ${levelClass(s.level)}"></div></div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Appendix ──
+  if (d.appendix && d.appendix.length) {
+    html += `<hr class="divider">`;
+    html += renderPrompt('~/appendix', 'open', 'attachments/', null);
+    html += `<div class="output">
+      <div class="section-header">[ 附录 ]</div>`;
+    d.appendix.forEach(a => {
+      html += `
+        <div class="card">
+          <div class="card-title">${esc(a.title)}</div>
+          <div class="card-desc">// ${esc(a.desc)}</div>
+          <div class="appendix-img">
+            ${a.image
+              ? `<img src="${esc(a.image)}" alt="${esc(a.title)}">`
+              : `<div class="appendix-placeholder">[ 在 RESUME.appendix[].image 中指定图片路径 ]</div>`
+            }
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Final cursor ──
+  html += `
+    <hr class="divider">
+    <div class="prompt">
+      <span class="prompt-user">visitor</span>
+      <span class="prompt-at">@</span>
+      <span class="prompt-host">resume</span>
+      <span class="prompt-sep">:</span>
+      <span class="prompt-path">~</span>
+      <span class="prompt-dollar">$</span>
+      <span class="cursor"></span>
+    </div>`;
+
+  // ── Body end ──
+  html += `</div>`;
+
+  // ── Status bar ──
+  html += `
+    <div class="crt-statusbar">
+      <div class="crt-statusbar-group">
+        <span class="crt-statusbar-active">● NORMAL</span>
+        <span>UTF-8</span>
+        <span>LF</span>
+      </div>
+      <div class="crt-statusbar-group">
+        <span>bash 5.2</span>
+        <span>Ln 1, Col 1</span>
+      </div>
+    </div>`;
+
+  document.getElementById('resume').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+render(RESUME);
+</script>
+
+</body>
+</html>

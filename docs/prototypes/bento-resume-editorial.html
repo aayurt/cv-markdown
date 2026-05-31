@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bento Resume — Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Noto+Serif+SC:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   CSS VARIABLES — Editorial / Newspaper
+   ================================================================ */
+:root {
+  --bg: #f5f0e8;
+  --bg-paper: #fffdf8;
+  --bg-paper-alt: #f9f5ed;
+  --bg-ink: #1a1714;
+  --bg-red: #c03020;
+  --bg-red-dark: #a02818;
+  --bg-red-soft: rgba(192, 48, 32, 0.06);
+  --bg-red-mid: rgba(192, 48, 32, 0.14);
+  --bg-warm: #f2ece0;
+
+  --text-1: #1a1714;
+  --text-2: #4a453d;
+  --text-3: #8a8478;
+  --text-red: #c03020;
+  --text-on-ink: #f5f0e8;
+  --text-on-red: #fff;
+
+  --border: #ddd6c8;
+  --border-strong: #c8c0b0;
+  --rule: #1a1714;
+  --rule-light: #c8c0b0;
+
+  --shadow-paper: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-paper-hover: 0 2px 4px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.07);
+
+  --r: 4px;
+  --r-sm: 3px;
+  --gap: 10px;
+  --pad: 24px;
+  --pad-sm: 18px;
+
+  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-body: 'Source Serif 4', 'Noto Serif SC', serif;
+  --font-sans: 'DM Sans', 'Noto Sans SC', sans-serif;
+
+  /* Paper texture via CSS */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle paper grain on body */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: var(--paper-grain);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ================================================================
+   PAGE
+   ================================================================ */
+.page {
+  max-width: 794px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ================================================================
+   MASTHEAD (newspaper top banner)
+   ================================================================ */
+.masthead {
+  text-align: center;
+  padding: 20px 0 16px;
+  margin-bottom: 6px;
+  border-bottom: 3px double var(--rule);
+  position: relative;
+}
+
+.masthead::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: var(--bg-red);
+  margin-bottom: 16px;
+}
+
+.masthead__name {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  color: var(--text-1);
+  text-transform: uppercase;
+}
+
+.masthead__subtitle {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 8px;
+}
+
+.masthead__rule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 1px;
+}
+
+.masthead__rule::before,
+.masthead__rule::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--rule-light);
+}
+
+/* ================================================================
+   SECTION (mini-grid rows)
+   ================================================================ */
+.section {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+/* ================================================================
+   CARD BASE — paper-like
+   ================================================================ */
+.card {
+  background: var(--bg-paper);
+  border-radius: var(--r);
+  padding: var(--pad);
+  box-shadow: var(--shadow-paper);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-paper-hover);
+  transform: translateY(-1px);
+}
+
+/* Span helpers */
+.span-12 { grid-column: span 12; }
+.span-8  { grid-column: span 8; }
+.span-7  { grid-column: span 7; }
+.span-6  { grid-column: span 6; }
+.span-5  { grid-column: span 5; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
+
+/* ================================================================
+   TAG (column header style)
+   ================================================================ */
+.tag {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-red);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: block;
+}
+
+.tag--dark {
+  color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* ================================================================
+   HERO — ink black, editorial headline
+   ================================================================ */
+.card--hero {
+  background: var(--bg-ink);
+  color: var(--text-on-ink);
+  padding: 30px var(--pad) 28px;
+}
+
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.hero__name {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.hero__title {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  padding: 4px 14px;
+  background: var(--bg-red);
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.hero__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Red accent bar on left of hero */
+.card--hero::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--bg-red);
+}
+
+/* ================================================================
+   CONTACT
+   ================================================================ */
+.card--contact { background: var(--bg-paper-alt); }
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 5px 6px;
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s;
+}
+
+a.contact-item:hover {
+  background: var(--bg-red-soft);
+  color: var(--text-red);
+}
+
+.contact-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-red-soft);
+  color: var(--text-red);
+  border-radius: 3px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   BIO — editorial first paragraph style
+   ================================================================ */
+.bio-text {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text-2);
+}
+
+.bio-text em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+/* Drop cap effect */
+.bio-text::first-letter {
+  font-family: var(--font-display);
+  float: left;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 0.85;
+  padding-right: 8px;
+  padding-top: 4px;
+  color: var(--text-red);
+}
+
+/* ================================================================
+   SKILLS — red accent card
+   ================================================================ */
+.card--skills-red {
+  background: var(--bg-red);
+  color: #fff;
+}
+
+.card--skills-red .tag {
+  color: rgba(255,255,255,0.45);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.skills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.skill-pill {
+  padding: 5px 14px;
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  transition: transform 0.2s;
+}
+
+.skill-pill:hover { transform: translateY(-1px); }
+
+.card--skills-red .skill-pill {
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* ================================================================
+   PROJECT
+   ================================================================ */
+.project__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.project__name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -0.2px;
+}
+
+.project__link {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-decoration: none;
+  padding: 3px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.project__link:hover {
+  border-color: var(--text-red);
+  color: var(--text-red);
+}
+
+.project__summary {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-3);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   BULLETS
+   ================================================================ */
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bullets li {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-2);
+  padding-left: 14px;
+  position: relative;
+}
+
+.bullets li::before {
+  content: '■';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 5px;
+  line-height: 2.6;
+  color: var(--text-red);
+}
+
+/* ================================================================
+   TECH CHIPS
+   ================================================================ */
+.tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.tech-chip {
+  padding: 2px 9px;
+  background: var(--bg-red-soft);
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--text-red);
+  letter-spacing: 0.3px;
+}
+
+/* ================================================================
+   WORK
+   ================================================================ */
+.work__company {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  letter-spacing: -0.2px;
+}
+
+.work__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+
+.work__role { color: var(--text-2); font-weight: 500; }
+.work__sep { opacity: 0.3; }
+
+.work__summary {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--text-2);
+  margin-bottom: 10px;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+/* Column rule between work bullets (newspaper feel) */
+.card--work-detailed .bullets {
+  column-count: 2;
+  column-gap: 24px;
+  column-rule: 0.5px solid var(--border);
+}
+
+.card--work-detailed .bullets li {
+  break-inside: avoid;
+  margin-bottom: 6px;
+}
+
+/* Compact work card */
+.card--compact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--bg-paper-alt);
+  border-left: 3px solid var(--bg-red);
+}
+
+.compact__company {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.compact__role {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.compact__time {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ================================================================
+   EDUCATION
+   ================================================================ */
+.edu__school {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.edu-rows { display: flex; flex-direction: column; gap: 5px; }
+
+.edu-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.edu-key {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  width: 36px;
+  flex-shrink: 0;
+}
+
+.edu-val {
+  font-family: var(--font-body);
+  color: var(--text-2);
+}
+
+/* ================================================================
+   APPENDIX
+   ================================================================ */
+.appendix__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.appendix__desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-3);
+  margin-bottom: 14px;
+  line-height: 1.65;
+}
+
+.appendix__img {
+  width: 100%;
+  border-radius: var(--r-sm);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.appendix__placeholder {
+  width: 100%;
+  border-radius: var(--r-sm);
+  aspect-ratio: 2.2 / 1;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 8px,
+    rgba(192, 48, 32, 0.03) 8px,
+    rgba(192, 48, 32, 0.03) 16px
+  );
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* ================================================================
+   COLOPHON (footer)
+   ================================================================ */
+.colophon {
+  text-align: center;
+  padding: 24px 0 48px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  color: var(--text-3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 680px) {
+  .section { grid-template-columns: repeat(4, 1fr); }
+  .span-12, .span-8, .span-7, .span-6, .span-5, .span-4, .span-3 {
+    grid-column: span 4;
+  }
+  .page { padding: 0 12px; margin: 16px auto; }
+  .card { padding: var(--pad-sm); }
+  .masthead__name { font-size: 32px; }
+  .card--work-detailed .bullets { column-count: 1; }
+}
+
+/* ================================================================
+   PRINT
+   ================================================================ */
+@media print {
+  body { background: #fff; }
+  body::after { display: none; }
+  .page { margin: 0; padding: 16px; max-width: 100%; }
+  .card { box-shadow: none; border: 0.5px solid var(--border); break-inside: avoid; }
+  .card:hover { transform: none; box-shadow: none; }
+  .card--hero, .card--skills-red { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .masthead { border-bottom-color: var(--text-1); }
+  .masthead::before { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .colophon { display: none; }
+}
+</style>
+</head>
+<body>
+
+<script>
+// ================================================================
+//  📋 RESUME DATA
+// ================================================================
+const RESUME = {
+
+  header: {
+    name: "陈思颖",
+    title: "产品经理 · 用户增长方向",
+    badge: "OPEN TO WORK",
+    github: "github.com/siyingchen",
+    website: "siyingchen.me",
+    phone: "+86 138-0000-5678",
+    email: "siying@example.com"
+  },
+
+  bio: `拥有 4 年互联网产品经理经验，专注<em>用户增长</em>与<em>数据驱动决策</em>。从 0 到 1 搭建过 DAU 百万级产品的增长体系，善于将模糊的业务目标拆解为可落地的产品方案。具备<em>设计敏感度</em>和基础技术理解力，能高效串联设计、开发与运营团队。`,
+
+  skills: [
+    "用户增长策略",
+    "A/B 测试 & 数据分析",
+    "Figma / Sketch",
+    "SQL & 数据看板搭建",
+    "跨部门项目管理"
+  ],
+
+  projects: [
+    {
+      name: "新用户激活体系",
+      repo: "github.com/siyingchen/activation",
+      summary: "为核心产品设计完整的新用户 Onboarding 与激活漏斗方案",
+      bullets: [
+        "定义 Aha Moment 并落地 5 步激活流程，7 日留存提升 23%",
+        "搭建实时数据看板，监控转化漏斗各环节流失原因",
+        "联合设计团队产出 3 版交互方案并完成灰度 A/B 测试",
+        "推动研发完成 Push + 站内信双触达通知链路"
+      ],
+      tech: ["用户旅程地图", "Mixpanel", "Figma", "飞书多维表格"]
+    },
+    {
+      name: "会员体系 2.0",
+      repo: "github.com/siyingchen/membership",
+      summary: "重新设计会员权益结构与成长路径，提升付费转化",
+      bullets: [
+        "竞品调研 8 款产品会员模型，输出策略分析报告",
+        "付费转化率提升 18%，月均 ARPPU 增长 ¥12"
+      ],
+      tech: ["竞品分析", "SQL", "Tableau"]
+    }
+  ],
+
+  work: [
+    {
+      company: "星辰科技",
+      role: "高级产品经理",
+      time: "2022.06 — 至今",
+      summary: "负责 C 端核心产品的增长与商业化方向，管理 3 人产品小组。",
+      bullets: [
+        "主导用户增长策略，推动 DAU 从 80 万增长至 150 万",
+        "建立产品实验文化，季度内完成 40+ 组 A/B 测试",
+        "统筹会员体系改版，协调设计、前端、后端共 12 人",
+        "推动 BI 团队搭建自助分析看板，提升决策效率"
+      ]
+    },
+    {
+      company: "蔚蓝互动",
+      role: "产品运营实习生",
+      time: "2021.03 — 2022.05"
+    }
+  ],
+
+  education: [
+    {
+      school: "浙江大学",
+      degree: "硕士 (M.A.)",
+      major: "数字媒体技术",
+      time: "2022 — 2025"
+    },
+    {
+      school: "浙江大学",
+      degree: "本科 (B.A.)",
+      major: "新媒体与信息管理",
+      time: "2018 — 2022"
+    }
+  ],
+
+  appendix: [
+    {
+      title: "增长漏斗看板 Demo",
+      desc: "基于 Mixpanel + Tableau 搭建的用户激活与留存分析看板，覆盖注册到付费全生命周期。",
+      image: null
+    },
+    {
+      title: "会员体系竞品分析",
+      desc: "覆盖 8 款主流产品的会员模型拆解，包含权益对比矩阵与定价策略分析。",
+      image: null
+    }
+  ]
+};
+
+// ================================================================
+//  🔧 RENDER
+// ================================================================
+const SPANS = {
+  pair: [7, 5],
+  pairFlip: [5, 7],
+  workDetail: 8,
+  workCompact: 4,
+};
+
+function renderBullets(items) {
+  return `<ul class="bullets">${items.map(b => `<li>${b}</li>`).join('')}</ul>`;
+}
+
+function renderTech(items) {
+  if (!items || !items.length) return '';
+  return `<div class="tech-row">${items.map(t => `<span class="tech-chip">${t}</span>`).join('')}</div>`;
+}
+
+function render(data) {
+  const root = document.getElementById('app');
+  const h = data.header;
+  let out = '';
+
+  // ---- MASTHEAD ----
+  out += `
+    <div class="masthead">
+      <div class="masthead__name">${h.name}</div>
+      <div class="masthead__subtitle">${h.title}</div>
+      <div class="masthead__rule">${h.badge || 'Resume'}</div>
+    </div>`;
+
+  // ---- ROW 1: Hero + Contact ----
+  out += `<div class="section">`;
+  out += `<div class="card card--hero span-8">
+    <span class="tag tag--dark">Profile</span>
+    <div class="hero__headline">求职意向</div>
+    <div class="hero__name">${h.title}</div>
+    <div class="hero__title">期待加入重视数据与用户体验的产品团队</div>
+    ${h.badge ? `<div class="hero__badge"><span class="hero__badge-dot"></span>${h.badge}</div>` : ''}
+  </div>`;
+
+  out += `<div class="card card--contact span-4">
+    <span class="tag">Contact</span>
+    <ul class="contact-list">
+      <a class="contact-item" href="https://${h.github}" target="_blank"><span class="contact-icon">⌘</span>${h.github}</a>
+      <a class="contact-item" href="https://${h.website}" target="_blank"><span class="contact-icon">◎</span>${h.website}</a>
+      <span class="contact-item"><span class="contact-icon">☎</span>${h.phone}</span>
+      <a class="contact-item" href="mailto:${h.email}"><span class="contact-icon">✉</span>${h.email}</a>
+    </ul>
+  </div>`;
+  out += `</div>`;
+
+  // ---- ROW 2: Bio + Skills ----
+  out += `<div class="section">`;
+  out += `<div class="card span-7">
+    <span class="tag">About</span>
+    <p class="bio-text">${data.bio}</p>
+  </div>`;
+  out += `<div class="card card--skills-red span-5">
+    <span class="tag tag--dark">Skills</span>
+    <div class="skills-wrap">${data.skills.map(s => `<span class="skill-pill">${s}</span>`).join('')}</div>
+  </div>`;
+  out += `</div>`;
+
+  // ---- Projects (dynamic) ----
+  const projects = data.projects;
+  for (let i = 0; i < projects.length; i += 2) {
+    out += `<div class="section">`;
+    const flip = (i / 2) % 2 === 1;
+    const spans = flip ? SPANS.pairFlip : SPANS.pair;
+
+    const p1 = projects[i];
+    out += `<div class="card span-${spans[0]}">
+      <span class="tag">Project</span>
+      <div class="project__head">
+        <span class="project__name">${p1.name}</span>
+        ${p1.repo ? `<a class="project__link" href="https://${p1.repo}" target="_blank">↗ Repo</a>` : ''}
+      </div>
+      <p class="project__summary">${p1.summary}</p>
+      ${renderBullets(p1.bullets)}
+      ${renderTech(p1.tech)}
+    </div>`;
+
+    if (projects[i + 1]) {
+      const p2 = projects[i + 1];
+      out += `<div class="card span-${spans[1]}">
+        <span class="tag">Project</span>
+        <div class="project__head">
+          <span class="project__name">${p2.name}</span>
+          ${p2.repo ? `<a class="project__link" href="https://${p2.repo}" target="_blank">↗ Repo</a>` : ''}
+        </div>
+        <p class="project__summary">${p2.summary}</p>
+        ${renderBullets(p2.bullets)}
+        ${renderTech(p2.tech)}
+      </div>`;
+    }
+    out += `</div>`;
+  }
+
+  // ---- Work (dynamic) ----
+  const workQ = [...data.work];
+  while (workQ.length > 0) {
+    out += `<div class="section">`;
+    const cur = workQ.shift();
+
+    if (cur.bullets && cur.bullets.length > 0) {
+      out += `<div class="card card--work-detailed span-${SPANS.workDetail}">
+        <span class="tag">Experience</span>
+        <div class="work__company">${cur.company}</div>
+        <div class="work__meta">
+          <span class="work__role">${cur.role}</span>
+          <span class="work__sep">·</span>
+          <span>${cur.time}</span>
+        </div>
+        ${cur.summary ? `<p class="work__summary">${cur.summary}</p>` : ''}
+        ${renderBullets(cur.bullets)}
+      </div>`;
+
+      const nextC = workQ.findIndex(w => !w.bullets || w.bullets.length === 0);
+      if (nextC !== -1) {
+        const c = workQ.splice(nextC, 1)[0];
+        out += `<div class="card card--compact span-${SPANS.workCompact}">
+          <span class="tag">Intern</span>
+          <div class="compact__company">${c.company}</div>
+          <div class="compact__role">${c.role}</div>
+          <div class="compact__time">${c.time}</div>
+        </div>`;
+      }
+    } else {
+      out += `<div class="card card--compact span-${SPANS.workCompact}">
+        <span class="tag">Experience</span>
+        <div class="compact__company">${cur.company}</div>
+        <div class="compact__role">${cur.role}</div>
+        <div class="compact__time">${cur.time}</div>
+      </div>`;
+      let rem = 12 - SPANS.workCompact;
+      while (workQ.length > 0 && rem >= SPANS.workCompact) {
+        const nx = workQ[0];
+        if (!nx.bullets || nx.bullets.length === 0) {
+          workQ.shift();
+          out += `<div class="card card--compact span-${SPANS.workCompact}">
+            <span class="tag">Experience</span>
+            <div class="compact__company">${nx.company}</div>
+            <div class="compact__role">${nx.role}</div>
+            <div class="compact__time">${nx.time}</div>
+          </div>`;
+          rem -= SPANS.workCompact;
+        } else { break; }
+      }
+    }
+    out += `</div>`;
+  }
+
+  // ---- Education (dynamic) ----
+  const eduList = data.education;
+  const eduSpans = eduList.length === 1 ? [5] : eduList.length === 2 ? [5, 7] : eduList.map(() => 4);
+  out += `<div class="section">`;
+  eduList.forEach((edu, i) => {
+    out += `<div class="card span-${eduSpans[i] || 4}">
+      <span class="tag">Education</span>
+      <div class="edu__school">${edu.school}</div>
+      <div class="edu-rows">
+        <div class="edu-row"><span class="edu-key">学位</span><span class="edu-val">${edu.degree}</span></div>
+        <div class="edu-row"><span class="edu-key">专业</span><span class="edu-val">${edu.major}</span></div>
+        <div class="edu-row"><span class="edu-key">时间</span><span class="edu-val">${edu.time}</span></div>
+      </div>
+    </div>`;
+  });
+  out += `</div>`;
+
+  // ---- Appendix (dynamic) ----
+  if (data.appendix && data.appendix.length > 0) {
+    for (let i = 0; i < data.appendix.length; i += 2) {
+      out += `<div class="section">`;
+      const spans = data.appendix.length === 1 ? [12] : (i / 2) % 2 === 0 ? [7, 5] : [5, 7];
+
+      const a1 = data.appendix[i];
+      out += `<div class="card span-${spans[0]}">
+        <span class="tag">Appendix</span>
+        <div class="appendix__title">${a1.title}</div>
+        <p class="appendix__desc">${a1.desc}</p>
+        ${a1.image
+          ? `<img class="appendix__img" src="${a1.image}" alt="${a1.title}" />`
+          : `<div class="appendix__placeholder">📷 替换 image 字段</div>`}
+      </div>`;
+
+      if (data.appendix[i + 1]) {
+        const a2 = data.appendix[i + 1];
+        out += `<div class="card span-${spans[1]}">
+          <span class="tag">Appendix</span>
+          <div class="appendix__title">${a2.title}</div>
+          <p class="appendix__desc">${a2.desc}</p>
+          ${a2.image
+            ? `<img class="appendix__img" src="${a2.image}" alt="${a2.title}" />`
+            : `<div class="appendix__placeholder">📷 替换 image 字段</div>`}
+        </div>`;
+      }
+      out += `</div>`;
+    }
+  }
+
+  root.innerHTML = out;
+}
+
+document.addEventListener('DOMContentLoaded', () => render(RESUME));
+</script>
+
+<main class="page" id="app"></main>
+<div class="colophon">Typeset with care · 2025</div>
+
+</body>
+</html>

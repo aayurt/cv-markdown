@@ -5,6 +5,8 @@
 
 Write in Markdown. Get a beautifully designed resume.
 
+**Live demo → [styled-resume.vercel.app](https://styled-resume.vercel.app/)**
+
 ### Preview
 
 ![cv-markdown overview](docs/screenshots/overview.png)

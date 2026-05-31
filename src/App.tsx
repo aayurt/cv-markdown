@@ -83,6 +83,7 @@ function App() {
 
     const previewHtml = previewRef.current.innerHTML;
     const title = `${resumeData.header.name || 'Resume'} Resume`;
+    printWindow.document.title = title;
 
     printWindow.document.write(`<!DOCTYPE html>
 <html>

@@ -1,0 +1,141 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: cv-markdown
+      - generic [ref=e7]:
+        - button "Shadcn" [ref=e8] [cursor=pointer]
+        - button "Retro" [ref=e9] [cursor=pointer]
+        - button "Awesome" [ref=e10] [cursor=pointer]
+        - button "Plain" [ref=e11] [cursor=pointer]
+        - button "Claude" [ref=e12] [cursor=pointer]
+        - button "Terminal" [ref=e13] [cursor=pointer]
+        - button "Editorial" [ref=e14] [cursor=pointer]
+    - generic [ref=e15]:
+      - button "ने" [ref=e16] [cursor=pointer]
+      - button "Copy Link" [ref=e17] [cursor=pointer]
+      - button "HTML" [ref=e18] [cursor=pointer]
+      - button "PDF" [ref=e19] [cursor=pointer]
+  - generic [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]: resume.md
+        - generic [ref=e24]: 3597 chars
+      - textbox [ref=e25]: "--- name: Aayurt Shrestha title: Full-stack Software Engineer phone: \"+977 9843516471\" email: aayurtshrestha@gmail.com github: github.com/aayurt website: aayurtshrestha.com.np status: Open to work --- ## Summary Full-stack Software Engineer with 5+ years of experience designing and building scalable distributed systems, multi-tenant SaaS platforms, and real-time applications. Experienced in architecting high-concurrency WebSocket systems, event-driven microservices, and batch/streaming data pipelines. ## Experience ### Founding Engineer (Contract) | Founding Engineer | May 2026 - Architected and delivered full-stack applications establishing the core technical foundation and dev-workflows. - Designed scalable APIs and modular backend services, improving system flexibility and maintainability. - Collaborated with clients to translate product requirements into production-ready features and systems. - Applied LLMs to speed up implementation while maintaining code quality, testing, and reliability standards. - Built high-performance, real-time systems with a focus on scalability and maintainable architecture. `React (Next.js)` `Node.js` `TypeScript` `WebSockets` `Redis` `PostgreSQL` `Docker` `VPS` `Better Auth` ### Pageup People (Clinch) | Software Engineer | Oct 2023 – Jun 2025 - Architected and delivered high-scale features for a multi-tenant recruitment marketing platform. - Built a real-time, Slack-style chat system supporting thousands of concurrent users during live events. - Designed batch and streaming pipelines powering workflows, automation, and search infrastructure. - Spearheaded AI/LLM integration to automate personalization and enhance candidate engagement. - Driven legacy-to-modern migration by refactoring CakePHP modules into scalable Node.js microservices. - Optimized database performance via indexing and refactoring to reduce dashboard latency. - Led frontend modernisation using Next.js, improving performance, SEO, and accessibility compliance. - Engineered secure public APIs and integration frameworks that accelerated partner onboarding by 30%. - Mentored engineering teams while improving testing standards with Playwright and Jest. `React (Next.js)` `Node.js` `GraphQL` `CakePHP` `WebSockets` `Redis` `Elasticsearch` `GCP` `MySQL` `Jira` `Inngest` `n8n` `Docker` `Playwright` `Jest` ### MobileKraft | Software Engineer | Sep 2022 – Jul 2023 > Full-stack web and mobile development for enterprise asset tracking - Architected full-stack web and Flutter apps for enterprise-grade asset tracking and operational workflows. - Owned the full product lifecycle, from stakeholder requirements through to final production deployment. - Engineered a low-code visual API builder, abstracting complex schemas to empower non-technical users. - Optimized backend latency using Redis caching and query tuning, significantly improving API response times. - Standardized foundational API patterns, developing shared service layers that accelerated feature delivery. - Ensured system reliability through proactive production monitoring, bug fixes, and release management. `React` `Flutter` `Node.js` `Express` `Redis` `YAML` `MongoDB` `TypeScript` `WebSockets` `JIRA` `Playwright` `Jest` ### Himalayan Techies | Software Engineer | Dec 2019 – Jul 2022 - Delivered end-to-end full-stack features for government and client applications, owning the lifecycle from UI design to database implementation. - Engineered offline-first solutions for rural environments, ensuring resilience in low-bandwidth settings. - Developed transaction and reporting engines for large-scale cooperative management systems. - Architected responsive interfaces from wireframes while mentoring junior developers on team standards. - Managed server infrastructure and Apache configurations to ensure high availability across domains. `React` `Node.js` `Express.js` `JavaScript` `TypeScript` `GraphQL` `Laravel` `MySQL` `Apache Server` `Git` `Docker` ## Education ### Kingston University | MSc | Software Engineering with Management Studies | 2023 ### Patan Multiple Campus | BSc | Computer Science & IT | 2019"
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Aayurt Shrestha
+        - generic [ref=e32]: Full-stack Software Engineer
+        - generic [ref=e33]: Open to work
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]: Profile
+          - generic [ref=e37]: Objective
+          - generic [ref=e38]: Full-stack Software Engineer
+          - generic [ref=e39]: Open to work
+        - generic [ref=e41]:
+          - generic [ref=e42]: Contact
+          - list [ref=e43]:
+            - link "⌘ github.com/aayurt" [ref=e44] [cursor=pointer]:
+              - /url: https://github.com/aayurt
+              - generic [ref=e45]: ⌘
+              - text: github.com/aayurt
+            - link "◎ aayurtshrestha.com.np" [ref=e46] [cursor=pointer]:
+              - /url: https://aayurtshrestha.com.np
+              - generic [ref=e47]: ◎
+              - text: aayurtshrestha.com.np
+            - generic [ref=e48]:
+              - generic [ref=e49]: ☎
+              - text: +977 9843516471
+            - link "✉ aayurtshrestha@gmail.com" [ref=e50] [cursor=pointer]:
+              - /url: mailto:aayurtshrestha@gmail.com
+              - generic [ref=e51]: ✉
+              - text: aayurtshrestha@gmail.com
+      - generic [ref=e53]:
+        - generic [ref=e54]: About
+        - paragraph [ref=e55]: Full-stack Software Engineer with 5+ years of experience designing and building scalable distributed systems, multi-tenant SaaS platforms, and real-time applications. Experienced in architecting high-concurrency WebSocket systems, event-driven microservices, and batch/streaming data pipelines.
+      - generic [ref=e57]:
+        - generic [ref=e58]: Experience
+        - generic [ref=e59]: Founding Engineer (Contract)
+        - generic [ref=e60]:
+          - generic [ref=e61]: Founding Engineer
+          - generic [ref=e62]: ·
+          - generic [ref=e63]: May 2026
+        - list [ref=e64]:
+          - listitem [ref=e65]: ■ Architected and delivered full-stack applications establishing the core technical foundation and dev-workflows.
+          - listitem [ref=e66]: ■ Designed scalable APIs and modular backend services, improving system flexibility and maintainability.
+          - listitem [ref=e67]: ■ Collaborated with clients to translate product requirements into production-ready features and systems.
+          - listitem [ref=e68]: ■ Applied LLMs to speed up implementation while maintaining code quality, testing, and reliability standards.
+          - listitem [ref=e69]: ■ Built high-performance, real-time systems with a focus on scalability and maintainable architecture.
+      - generic [ref=e71]:
+        - generic [ref=e72]: Experience
+        - generic [ref=e73]: Pageup People (Clinch)
+        - generic [ref=e74]:
+          - generic [ref=e75]: Software Engineer
+          - generic [ref=e76]: ·
+          - generic [ref=e77]: Oct 2023 – Jun 2025
+        - list [ref=e78]:
+          - listitem [ref=e79]: ■ Architected and delivered high-scale features for a multi-tenant recruitment marketing platform.
+          - listitem [ref=e80]: ■ Built a real-time, Slack-style chat system supporting thousands of concurrent users during live events.
+          - listitem [ref=e81]: ■ Designed batch and streaming pipelines powering workflows, automation, and search infrastructure.
+          - listitem [ref=e82]: ■ Spearheaded AI/LLM integration to automate personalization and enhance candidate engagement.
+          - listitem [ref=e83]: ■ Driven legacy-to-modern migration by refactoring CakePHP modules into scalable Node.js microservices.
+          - listitem [ref=e84]: ■ Optimized database performance via indexing and refactoring to reduce dashboard latency.
+          - listitem [ref=e85]: ■ Led frontend modernisation using Next.js, improving performance, SEO, and accessibility compliance.
+          - listitem [ref=e86]: ■ Engineered secure public APIs and integration frameworks that accelerated partner onboarding by 30%.
+          - listitem [ref=e87]: ■ Mentored engineering teams while improving testing standards with Playwright and Jest.
+      - generic [ref=e89]:
+        - generic [ref=e90]: Experience
+        - generic [ref=e91]: MobileKraft
+        - generic [ref=e92]:
+          - generic [ref=e93]: Software Engineer
+          - generic [ref=e94]: ·
+          - generic [ref=e95]: Sep 2022 – Jul 2023
+        - paragraph [ref=e96]: Full-stack web and mobile development for enterprise asset tracking
+        - list [ref=e97]:
+          - listitem [ref=e98]: ■ Architected full-stack web and Flutter apps for enterprise-grade asset tracking and operational workflows.
+          - listitem [ref=e99]: ■ Owned the full product lifecycle, from stakeholder requirements through to final production deployment.
+          - listitem [ref=e100]: ■ Engineered a low-code visual API builder, abstracting complex schemas to empower non-technical users.
+          - listitem [ref=e101]: ■ Optimized backend latency using Redis caching and query tuning, significantly improving API response times.
+          - listitem [ref=e102]: ■ Standardized foundational API patterns, developing shared service layers that accelerated feature delivery.
+          - listitem [ref=e103]: ■ Ensured system reliability through proactive production monitoring, bug fixes, and release management.
+      - generic [ref=e105]:
+        - generic [ref=e106]: Experience
+        - generic [ref=e107]: Himalayan Techies
+        - generic [ref=e108]:
+          - generic [ref=e109]: Software Engineer
+          - generic [ref=e110]: ·
+          - generic [ref=e111]: Dec 2019 – Jul 2022
+        - list [ref=e112]:
+          - listitem [ref=e113]: ■ Delivered end-to-end full-stack features for government and client applications, owning the lifecycle from UI design to database implementation.
+          - listitem [ref=e114]: ■ Engineered offline-first solutions for rural environments, ensuring resilience in low-bandwidth settings.
+          - listitem [ref=e115]: ■ Developed transaction and reporting engines for large-scale cooperative management systems.
+          - listitem [ref=e116]: ■ Architected responsive interfaces from wireframes while mentoring junior developers on team standards.
+          - listitem [ref=e117]: ■ Managed server infrastructure and Apache configurations to ensure high availability across domains.
+      - generic [ref=e118]:
+        - generic [ref=e119]:
+          - generic [ref=e120]: Education
+          - generic [ref=e121]: Kingston University
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - generic [ref=e124]: Degree
+              - generic [ref=e125]: MSc
+            - generic [ref=e126]:
+              - generic [ref=e127]: Major
+              - generic [ref=e128]: Software Engineering with Management Studies
+            - generic [ref=e129]:
+              - generic [ref=e130]: Period
+              - generic [ref=e131]: "2023"
+        - generic [ref=e132]:
+          - generic [ref=e133]: Education
+          - generic [ref=e134]: Patan Multiple Campus
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: Degree
+              - generic [ref=e138]: BSc
+            - generic [ref=e139]:
+              - generic [ref=e140]: Major
+              - generic [ref=e141]: Computer Science & IT
+            - generic [ref=e142]:
+              - generic [ref=e143]: Period
+              - generic [ref=e144]: "2019"
+      - generic [ref=e145]: Typeset with care

@@ -4,6 +4,7 @@ import type { Locale } from "../i18n";
 import ShadcnPreview from "./shadcn/PreviewTemplate";
 import ShadcnRetroPreview from "./shadcn-retro/PreviewTemplate";
 import AwesomeShadcnPreview from "./awesomeshadcn/PreviewTemplate";
+import PlainPreview from "./plain/PreviewTemplate";
 import ClaudePreview from "./claude/PreviewTemplate";
 import TerminalPreview from "./terminal/PreviewTemplate";
 import EditorialPreview from "./editorial/PreviewTemplate";
@@ -24,6 +25,7 @@ export const templates: Template[] = [
   { id: "shadcn", name: "Shadcn", component: ShadcnPreview },
   { id: "shadcn-retro", name: "Retro", component: ShadcnRetroPreview },
   { id: "awesomeshadcn", name: "Awesome", component: AwesomeShadcnPreview },
+  { id: "plain", name: "Plain", component: PlainPreview },
   { id: "claude", name: "Claude", component: ClaudePreview },
   { id: "terminal", name: "Terminal", component: TerminalPreview },
   { id: "editorial", name: "Editorial", component: EditorialPreview },

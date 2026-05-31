@@ -1,12 +1,12 @@
 {
-  "name": "styled-resume",
+  "name": "cv-markdown",
   "version": "0.1.0",
   "description": "A markdown-based resume editor with beautifully designed templates, PDF/HTML export, and shareable links.",
-  "author": "YUHAO-corn",
+  "author": "Aayurt Shrestha",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YUHAO-corn/styled-resume"
+    "url": "https://github.com/aayurt/cv-markdown"
   },
   "keywords": ["resume", "cv", "markdown", "template", "pdf", "react", "vite"],
   "type": "module",

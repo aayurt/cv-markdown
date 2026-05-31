@@ -9,7 +9,7 @@ const messages: Record<Locale, Record<string, string>> = {
     linkCopied: 'लिङ्क क्लिपबोर्डमा प्रतिलिपि गरियो',
     editorLabel: 'resume.md',
     charCount: '{n} अक्षर',
-    viewFooter: 'styled-resume बाट बनाइएको',
+    viewFooter: 'cv-markdown बाट बनाइएको',
     // Template section headers
     summary: 'सारांश',
     projects: 'परियोजनाहरू',
@@ -41,7 +41,7 @@ const messages: Record<Locale, Record<string, string>> = {
     linkCopied: 'Link copied to clipboard',
     editorLabel: 'resume.md',
     charCount: '{n} chars',
-    viewFooter: 'Built with styled-resume',
+    viewFooter: 'Built with cv-markdown',
     // Template section headers
     summary: 'Summary',
     projects: 'Projects',

@@ -8,9 +8,9 @@ import { t, detectLocale } from './i18n';
 import type { Locale } from './i18n';
 import ViewMode from './components/ViewMode';
 
-const STORAGE_KEY = 'styled-resume:markdown';
-const TEMPLATE_KEY = 'styled-resume:template';
-const LOCALE_KEY = 'styled-resume:locale';
+const STORAGE_KEY = 'cv-markdown:markdown';
+const TEMPLATE_KEY = 'cv-markdown:template';
+const LOCALE_KEY = 'cv-markdown:locale';
 
 function loadMarkdown() {
   try {
@@ -183,7 +183,7 @@ function App() {
             fontFamily: '"JetBrains Mono", monospace',
             letterSpacing: '-0.02em',
           }}>
-            styled-resume
+            cv-markdown
           </span>
           <div style={{ display: 'flex', gap: '4px', padding: '2px', borderRadius: '6px', background: '#27272a' }}>
             {templates.map((t) => (

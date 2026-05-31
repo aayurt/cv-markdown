@@ -532,7 +532,7 @@ export default function ShadcnRetroPreview({ data, locale = 'en' }: { data: Resu
           background: "linear-gradient(0deg, #0a0a0a 0%, #0d0d0d 100%)",
         }}>
           <span style={{ fontSize: "10px", color: "#6a5530", fontFamily: '"JetBrains Mono", monospace', letterSpacing: "0.05em" }}>
-            [styled-resume] -- retro
+            [cv-markdown] -- retro
           </span>
           <span style={{ fontSize: "10px", color: "#6a5530", fontFamily: '"VT323", monospace', letterSpacing: "0.05em" }}>
             _SYSTEM OK

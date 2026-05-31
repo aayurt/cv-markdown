@@ -1,4 +1,4 @@
-# styled-resume
+# cv-markdown
 
 [![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)](https://www.typescriptlang.org)
@@ -7,7 +7,7 @@ Write in Markdown. Get a beautifully designed resume.
 
 ### Preview
 
-![styled-resume overview](docs/screenshots/overview.png)
+![cv-markdown overview](docs/screenshots/overview.png)
 
 | Shadcn | Claude | Terminal | Editorial |
 |--------|--------|----------|-----------|
@@ -16,7 +16,7 @@ Write in Markdown. Get a beautifully designed resume.
 
 ### What is this?
 
-Most markdown resume tools produce the same plain output. styled-resume is different — it turns your markdown into resumes that actually look designed.
+Most markdown resume tools produce the same plain output. cv-markdown is different — it turns your markdown into resumes that actually look designed.
 
 One markdown file, four distinct visual styles. Switch templates instantly, export as PDF or HTML, or share a link that renders your resume in the browser.
 
